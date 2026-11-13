@@ -13,6 +13,9 @@ const year = new Date().getFullYear();
   <p class="footer-mark">desobediente</p>
   <p class="footer-motto">«{artista.lema}»</p>
   <p class="footer-legal">© {year} {artista.nombre} · «{single.titulo}» © {single.sello}</p>
+  <p class="footer-credit">
+    Hecho por <a href="https://franmaxi.dev" target="_blank" rel="noopener">Franmaxi.dev</a>
+  </p>
 </footer>
 
 <style>
@@ -38,11 +41,20 @@ const year = new Date().getFullYear();
     font-size: 1.05rem;
     color: var(--bone);
   }
-  .footer-legal {
+  .footer-legal,
+  .footer-credit {
     margin: 0;
     font-family: var(--f-mono);
     font-size: .74rem;
     letter-spacing: .06em;
     color: var(--muted);
   }
+  .footer-credit { margin-top: 8px; }
+  .footer-credit a {
+    color: var(--bone);
+    text-decoration-color: var(--red);
+    text-underline-offset: 3px;
+    transition: color .2s;
+  }
+  .footer-credit a:hover { color: var(--red-text); }
 </style>
