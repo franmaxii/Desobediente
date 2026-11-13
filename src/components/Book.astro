@@ -1,0 +1,90 @@
+---
+import { Image } from 'astro:assets';
+import Icon from './Icon.astro';
+import { libro } from '../data/libro';
+---
+
+<section id="libro" class="section book" aria-labelledby="book-title">
+  <div class="book-cover" data-reveal>
+    <Image
+      src={libro.portada}
+      alt="Tapa del libro: título en letras góticas rojas rodeado de ojos, cadenas y velas."
+      widths={[256, 384, 512]}
+      sizes="(min-width: 480px) 380px, 78vw"
+    />
+  </div>
+
+  <div class="book-body" data-reveal>
+    <p class="eyebrow">{libro.estado}</p>
+    <h2 id="book-title" class="title-gothic title-book">{libro.titulo}</h2>
+    <p class="lead">{libro.pregunta}</p>
+    <p class="muted synopsis">{libro.sinopsis}</p>
+
+    <figure class="quote">
+      <blockquote>
+        <p>{libro.cita.texto}</p>
+      </blockquote>
+      <figcaption class="inline-links" set:html={libro.cita.fuente} />
+    </figure>
+
+    <a class="btn btn-red" href={libro.url} target="_blank" rel="noopener">
+      Leer en Wattpad
+      <Icon name="arrow" />
+    </a>
+  </div>
+</section>
+
+<style>
+  .book {
+    display: grid;
+    gap: 44px;
+    align-items: center;
+  }
+  @media (min-width: 880px) {
+    .book { grid-template-columns: minmax(0, .72fr) minmax(0, 1.28fr); gap: 72px; }
+  }
+
+  .book-cover {
+    width: min(380px, 78vw);
+    margin: 0 auto;
+  }
+  .book-cover :global(img) {
+    width: 100%;
+    box-shadow: 0 40px 90px -30px rgba(227, 21, 30, .5), 0 0 0 1px rgba(255, 255, 255, .05);
+    transform: rotate(-2deg);
+    transition: transform .5s var(--ease);
+  }
+  .book-cover:hover :global(img) { transform: rotate(0); }
+
+  .title-book {
+    font-size: clamp(2.5rem, 5.4vw, 4.1rem);
+    margin-bottom: 24px;
+  }
+
+  .synopsis { max-width: 60ch; }
+
+  .quote {
+    margin: 32px 0 36px;
+    padding: 4px 0 4px 22px;
+    border-left: 2px solid var(--red);
+  }
+  .quote blockquote { margin: 0; }
+  .quote blockquote p {
+    margin: 0 0 12px;
+    font-size: clamp(1.3rem, 2.4vw, 1.6rem);
+    font-style: italic;
+    line-height: 1.35;
+    color: var(--bone);
+    text-wrap: balance;
+  }
+  .quote figcaption {
+    font-family: var(--f-mono);
+    font-size: .78rem;
+    letter-spacing: .04em;
+    color: var(--muted);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .book-cover :global(img) { transition: none; }
+  }
+</style>

@@ -1,0 +1,24 @@
+{
+  "name": "desobediente",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Sitio oficial de Desobediente",
+  "engines": {
+    "node": ">=22.23.4"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "astro": "^7.4.11"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.12",
+    "typescript": "^6.0.3"
+  }
+}

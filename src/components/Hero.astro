@@ -1,0 +1,150 @@
+---
+import { Image } from 'astro:assets';
+import Fuse from './Fuse.astro';
+import Icon from './Icon.astro';
+import { artista } from '../data/artista';
+import { single } from '../data/musica';
+import heroImg from '../assets/img/hero.jpg';
+---
+
+<section class="hero" aria-labelledby="hero-title">
+  <div class="hero-glow" aria-hidden="true"></div>
+
+  <figure class="hero-photo">
+    <Image
+      src={heroImg}
+      alt="Desobediente con una chaqueta de tiras y hebillas, mirando hacia arriba, bajo luz fría celeste."
+      widths={[280, 440, 560]}
+      sizes="(min-width: 560px) 440px, 80vw"
+      loading="eager"
+      fetchpriority="high"
+    />
+  </figure>
+
+  <h1 id="hero-title" class="wordmark">desobediente</h1>
+  <p class="hero-kicker">Pop rock · {artista.origen}</p>
+  <p class="hero-sub">Canciones para incomodar cuando hace falta. Rebeldía, crítica social y libertad de pensamiento.</p>
+
+  <div class="hero-cta">
+    <button class="btn btn-red" type="button" data-play-main>
+      <Icon name="play" class="i-play" />
+      <Icon name="pause" class="i-pause" />
+      <span data-play-label>Escuchá «{single.titulo}»</span>
+    </button>
+    <a class="btn btn-ghost" href="#videoclips">Ver videoclips</a>
+  </div>
+
+  <div class="hero-fuse">
+    <Fuse variant="hero" />
+    <p class="motto">«{artista.lema}»</p>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100svh;
+    padding: 104px var(--gutter) 56px;
+    text-align: center;
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  .hero-glow {
+    position: absolute;
+    z-index: -1;
+    top: 6%;
+    left: 50%;
+    width: min(1100px, 160vw);
+    aspect-ratio: 1;
+    transform: translateX(-50%);
+    background: radial-gradient(closest-side, rgba(169, 212, 234, .16), rgba(169, 212, 234, .04) 55%, transparent 75%);
+    pointer-events: none;
+  }
+
+  .hero-photo {
+    position: relative;
+    width: min(440px, 80vw);
+    margin: 0;
+  }
+  .hero-photo :global(img) {
+    width: 100%;
+    aspect-ratio: 560 / 500;
+    object-fit: cover;
+    filter: contrast(1.05);
+    -webkit-mask-image: linear-gradient(to bottom, #000 62%, transparent 98%);
+    mask-image: linear-gradient(to bottom, #000 62%, transparent 98%);
+  }
+  /* marco rojo desfasado, como impresión corrida */
+  .hero-photo::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    transform: translate(12px, -12px);
+    border: 1px solid var(--red);
+    -webkit-mask-image: linear-gradient(to bottom, #000 50%, transparent 92%);
+    mask-image: linear-gradient(to bottom, #000 50%, transparent 92%);
+    pointer-events: none;
+  }
+
+  .wordmark {
+    position: relative;
+    z-index: 2;
+    margin-top: -.5em;
+    font-family: var(--f-gothic);
+    font-weight: 700;
+    font-size: clamp(3.4rem, 15.5vw, 10.5rem);
+    line-height: .9;
+    letter-spacing: -.005em;
+    color: var(--red);
+    text-shadow: 0 3px 0 rgba(0, 0, 0, .7), 0 0 60px rgba(227, 21, 30, .28);
+  }
+
+  .hero-kicker {
+    margin: 22px 0 10px;
+    font-family: var(--f-mono);
+    font-size: .8rem;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: var(--ice);
+  }
+
+  .hero-sub {
+    max-width: 34ch;
+    margin: 0 auto;
+    font-size: 1.2rem;
+    line-height: 1.5;
+    color: var(--muted);
+    text-wrap: balance;
+  }
+
+  .hero-cta {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    margin: 30px 0 56px;
+  }
+  .hero-cta :global(svg) { width: 16px; height: 16px; }
+
+  .hero-fuse {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin-top: auto;
+  }
+
+  .motto {
+    margin: 14px 0 0;
+    font-family: var(--f-cond);
+    font-size: 1.05rem;
+    font-weight: 500;
+    font-style: italic;
+    letter-spacing: .04em;
+    color: var(--bone);
+  }
+</style>

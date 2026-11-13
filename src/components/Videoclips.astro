@@ -1,0 +1,97 @@
+---
+import SectionHead from './SectionHead.astro';
+import YouTube from './YouTube.astro';
+import Icon from './Icon.astro';
+import { videoclips } from '../data/musica';
+import { redPorId } from '../data/artista';
+import { anio } from '../utils/formato';
+
+const youtube = redPorId('youtube');
+---
+
+<section id="videoclips" class="section" aria-labelledby="clips-title">
+  <SectionHead id="clips-title" eyebrow="Videoclips oficiales" title="Antes del EP" />
+
+  <ol class="tracklist">
+    {
+      videoclips.map((v, i) => (
+        <li class="track" data-reveal>
+          <span class="track-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+          <YouTube
+            id={v.youtubeId}
+            title={v.titulo}
+            thumbnail={v.miniatura}
+            widths={[320, 640]}
+            sizes="(min-width: 760px) 300px, 100vw"
+          />
+          <div class="track-info">
+            <h3 class="track-name">
+              {v.titulo} <span class="track-year">{anio(v.fecha)}</span>
+            </h3>
+            <p set:html={v.texto} class="inline-links" />
+          </div>
+        </li>
+      ))
+    }
+  </ol>
+
+  <a class="btn btn-ghost btn-wide" href={`${youtube.url}/videos`} target="_blank" rel="noopener">
+    Todo el canal en YouTube
+    <Icon name="arrow" />
+  </a>
+</section>
+
+<style>
+  .tracklist {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .track {
+    display: grid;
+    gap: 18px;
+    padding: 28px 0;
+    border-top: 1px solid var(--line);
+  }
+  .track:last-child { border-bottom: 1px solid var(--line); }
+
+  .track-num {
+    font-family: var(--f-mono);
+    font-size: .85rem;
+    color: var(--red-text);
+  }
+
+  @media (min-width: 760px) {
+    .track {
+      grid-template-columns: 44px minmax(0, 300px) minmax(0, 1fr);
+      gap: 28px;
+      align-items: center;
+    }
+    .track-num { align-self: start; padding-top: 4px; }
+  }
+  @media (max-width: 759px) {
+    .track-num { display: none; }
+  }
+
+  .track-name {
+    margin-bottom: 8px;
+    font-family: var(--f-cond);
+    font-size: clamp(1.7rem, 3.4vw, 2.3rem);
+    font-weight: 700;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+  .track-year {
+    margin-left: 8px;
+    font-family: var(--f-mono);
+    font-size: .8rem;
+    font-weight: 400;
+    letter-spacing: .08em;
+    color: var(--muted);
+    vertical-align: middle;
+  }
+  .track-info p { margin: 0; max-width: 54ch; color: var(--muted); }
+
+  .btn-wide { width: 100%; margin-top: 40px; }
+</style>

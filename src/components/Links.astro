@@ -1,0 +1,107 @@
+---
+import SectionHead from './SectionHead.astro';
+import Icon from './Icon.astro';
+import { redes, redPorId } from '../data/artista';
+
+const instagram = redPorId('instagram');
+---
+
+<section id="redes" class="section" aria-labelledby="links-title">
+  <SectionHead id="links-title" eyebrow="Redes" title="Seguila" />
+
+  <ul class="link-list">
+    {
+      redes.map((r, i) => (
+        <li data-reveal={i * 90}>
+          <a class="link-row" href={r.url} target="_blank" rel="noopener">
+            <Icon name={r.id} class="link-icon" />
+            <span class="link-name">{r.nombre}</span>
+            <span class="link-handle">
+              {r.handle} · {r.detalle}
+            </span>
+            <Icon name="arrow" class="link-arrow" />
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+
+  <p class="links-note inline-links">
+    Shows, prensa y colaboraciones: escribile por <a href={instagram.url} target="_blank" rel="noopener">Instagram</a>.
+  </p>
+</section>
+
+<style>
+  .link-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-top: 1px solid var(--line);
+  }
+
+  .link-row {
+    display: grid;
+    grid-template-columns: 32px minmax(0, 1fr) 24px;
+    grid-template-areas:
+      "icon name arrow"
+      "icon handle arrow";
+    column-gap: 18px;
+    align-items: center;
+    padding: 24px 8px;
+    border-bottom: 1px solid var(--line);
+    text-decoration: none;
+    transition: background-color .25s, padding .3s var(--ease);
+  }
+  @media (min-width: 760px) {
+    .link-row {
+      grid-template-columns: 40px minmax(0, 1fr) auto 28px;
+      grid-template-areas: "icon name handle arrow";
+      column-gap: 24px;
+      padding: 30px 12px;
+    }
+  }
+  .link-row:hover { background: var(--bg-2); padding-left: 20px; }
+
+  .link-row :global(.link-icon) {
+    grid-area: icon;
+    width: 28px;
+    height: 28px;
+    color: var(--bone);
+    transition: color .2s;
+  }
+  .link-name {
+    grid-area: name;
+    font-family: var(--f-cond);
+    font-size: clamp(1.9rem, 5vw, 3rem);
+    font-weight: 700;
+    line-height: 1;
+    text-transform: uppercase;
+    transition: color .2s;
+  }
+  .link-handle {
+    grid-area: handle;
+    margin-top: 4px;
+    font-family: var(--f-mono);
+    font-size: .8rem;
+    color: var(--muted);
+  }
+  .link-row :global(.link-arrow) {
+    grid-area: arrow;
+    width: 24px;
+    height: 24px;
+    transition: transform .3s var(--ease), color .2s;
+  }
+  .link-row:hover .link-name,
+  .link-row:hover :global(.link-icon),
+  .link-row:hover :global(.link-arrow) { color: var(--red); }
+  .link-row:hover :global(.link-arrow) { transform: translate(3px, -3px); }
+
+  .links-note {
+    margin-top: 28px;
+    color: var(--muted);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .link-row { transition: none; }
+  }
+</style>

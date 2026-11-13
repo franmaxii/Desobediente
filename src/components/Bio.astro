@@ -1,0 +1,93 @@
+---
+import SectionHead from './SectionHead.astro';
+import { artista } from '../data/artista';
+
+const ficha = [
+  { label: 'Nombre', value: artista.nombreReal },
+  { label: 'Alias', value: artista.nombre },
+  { label: 'Origen', value: artista.origen },
+  { label: 'Sonido', value: 'Pop rock · rock nacional' },
+  { label: 'Oficios', value: artista.oficios.join(', ') },
+  { label: 'Número', value: '13' },
+];
+---
+
+<section id="bio" class="section" aria-labelledby="bio-title">
+  <SectionHead id="bio-title" eyebrow="Bio" title="No busca encajar" />
+
+  <div class="bio-grid">
+    <div class="bio-text" data-reveal>
+      <p class="lead">
+        {artista.nombre} es {artista.nombreReal}, nacida en Buenos Aires en {artista.anioNacimiento}. Cantante, actriz,
+        modelo, escritora y guitarrista.
+      </p>
+      <p>
+        La música se volvió su principal forma de expresión, con una identidad ligada al pop rock, la rebeldía y la
+        crítica social. Estética oscura, actitud provocadora y una mirada filosa sobre la sociedad: le interesa hablar
+        de injusticias, de contradicciones humanas y de las realidades que muchas veces se prefieren ignorar.
+      </p>
+      <p>
+        Edita sus propios proyectos audiovisuales y trabaja en comunicación digital. En 2026 se recibió de community
+        manager y de perforadora. Su lema es una pregunta: de qué lado de la historia está cada uno.
+      </p>
+    </div>
+
+    <dl class="ficha" aria-label="Ficha" data-reveal>
+      {
+        ficha.map((f) => (
+          <div>
+            <dt>{f.label}</dt>
+            <dd>{f.value}</dd>
+          </div>
+        ))
+      }
+    </dl>
+  </div>
+</section>
+
+<style>
+  .bio-grid {
+    display: grid;
+    gap: 44px;
+  }
+  @media (min-width: 880px) {
+    .bio-grid { grid-template-columns: minmax(0, 1.2fr) minmax(0, .8fr); gap: 72px; align-items: start; }
+  }
+  .bio-text p:not(.lead) { color: var(--muted); max-width: 62ch; }
+
+  .ficha {
+    position: relative;
+    margin: 0;
+    padding: 26px 24px 8px;
+    border: 1px dashed var(--ash);
+    font-family: var(--f-mono);
+    font-size: .92rem;
+  }
+  .ficha::before {
+    content: "FICHA · Nº 13";
+    position: absolute;
+    top: -10px;
+    left: 18px;
+    padding: 0 8px;
+    background: var(--bg);
+    font-size: .72rem;
+    letter-spacing: .14em;
+    color: var(--red-text);
+  }
+  .ficha div {
+    display: grid;
+    grid-template-columns: 92px minmax(0, 1fr);
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px dashed var(--line);
+  }
+  .ficha div:last-child { border-bottom: 0; }
+  .ficha dt {
+    padding-top: 2px;
+    font-size: .72rem;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .ficha dd { margin: 0; color: var(--bone); line-height: 1.5; }
+</style>

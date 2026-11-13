@@ -1,0 +1,36 @@
+---
+/** Íconos inline. Todos heredan el color con currentColor. */
+type IconName = 'play' | 'pause' | 'arrow' | 'youtube' | 'instagram' | 'wattpad';
+
+interface Props {
+  name: IconName;
+  class?: string;
+}
+
+const { name, class: className } = Astro.props;
+---
+
+<svg viewBox="0 0 24 24" aria-hidden="true" class:list={[`icon-${name}`, className]}>
+  {name === 'play' && <path d="M7 4.5v15l13-7.5z" fill="currentColor" />}
+  {name === 'pause' && <path d="M6 4h4.5v16H6zM13.5 4H18v16h-4.5z" fill="currentColor" />}
+  {name === 'arrow' && <path d="M7 17 17 7M9 7h8v8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />}
+  {name === 'youtube' && (
+    <path
+      fill="currentColor"
+      d="M21.6 7.2a2.5 2.5 0 0 0-1.8-1.8C18.2 5 12 5 12 5s-6.2 0-7.8.4A2.5 2.5 0 0 0 2.4 7.2 26 26 0 0 0 2 12a26 26 0 0 0 .4 4.8 2.5 2.5 0 0 0 1.8 1.8c1.6.4 7.8.4 7.8.4s6.2 0 7.8-.4a2.5 2.5 0 0 0 1.8-1.8A26 26 0 0 0 22 12a26 26 0 0 0-.4-4.8ZM10 15.1V8.9l5.2 3.1Z"
+    />
+  )}
+  {name === 'instagram' && (
+    <>
+      <rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2" />
+      <circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="2" />
+      <circle cx="17.4" cy="6.6" r="1.3" fill="currentColor" />
+    </>
+  )}
+  {name === 'wattpad' && (
+    <path
+      fill="currentColor"
+      d="M3 6.5c0-1 1.4-1.4 2-.5l2.6 7.6L10.4 6c.4-1 1.8-1 2.2 0l2.6 7.6L18 6c.5-1 2-.6 2 .5 0 .2 0 .3-.1.5l-4 11c-.4 1-1.9 1-2.3 0L11.5 12l-2.1 6c-.4 1-1.9 1-2.3 0l-4-11C3 6.8 3 6.7 3 6.5Z"
+    />
+  )}
+</svg>

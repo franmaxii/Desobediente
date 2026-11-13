@@ -1,0 +1,200 @@
+---
+const links = [
+  { href: '#musica', label: 'Música' },
+  { href: '#ep', label: 'EP' },
+  { href: '#videoclips', label: 'Videoclips' },
+  { href: '#libro', label: 'Libro' },
+  { href: '#bio', label: 'Bio' },
+  { href: '#redes', label: 'Redes' },
+];
+---
+
+<header class="nav" data-nav>
+  <a class="nav-logo" href="#top" aria-label="Desobediente, inicio">desobediente</a>
+  <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu" data-nav-toggle>
+    <span class="sr-only" data-nav-toggle-label>Abrir menú</span>
+    <span class="nav-toggle-bars" aria-hidden="true"></span>
+  </button>
+  <nav id="nav-menu" class="nav-menu" aria-label="Secciones">
+    {links.map((l) => <a href={l.href}>{l.label}</a>)}
+  </nav>
+</header>
+
+<style>
+  .nav {
+    position: fixed;
+    inset: 0 0 auto;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    height: 64px;
+    padding: 0 var(--gutter);
+    border-bottom: 1px solid transparent;
+    transition: background-color .3s, border-color .3s;
+  }
+  .nav.is-scrolled,
+  .nav.is-open {
+    background: rgba(8, 8, 10, .88);
+    border-bottom-color: var(--line);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+  }
+
+  .nav-logo {
+    font-family: var(--f-gothic);
+    font-size: 1.75rem;
+    line-height: 1;
+    color: var(--red);
+    text-decoration: none;
+    transform: translateY(-2px);
+  }
+
+  .nav-menu {
+    display: flex;
+    gap: 28px;
+  }
+  .nav-menu a {
+    position: relative;
+    font-family: var(--f-cond);
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--muted);
+    transition: color .2s;
+  }
+  .nav-menu a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -4px;
+    height: 2px;
+    background: var(--red);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform .25s var(--ease);
+  }
+  .nav-menu a:hover,
+  .nav-menu a[aria-current="true"] { color: var(--bone); }
+  .nav-menu a:hover::after,
+  .nav-menu a[aria-current="true"]::after { transform: scaleX(1); }
+
+  .nav-toggle {
+    display: none;
+    width: 44px;
+    height: 44px;
+    margin-right: -10px;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--bone);
+    cursor: pointer;
+  }
+  .nav-toggle-bars,
+  .nav-toggle-bars::before,
+  .nav-toggle-bars::after {
+    display: block;
+    width: 22px;
+    height: 2px;
+    margin: 0 auto;
+    background: currentColor;
+    transition: transform .25s var(--ease), opacity .2s;
+  }
+  .nav-toggle-bars { position: relative; }
+  .nav-toggle-bars::before,
+  .nav-toggle-bars::after {
+    content: "";
+    position: absolute;
+    left: 0;
+  }
+  .nav-toggle-bars::before { top: -7px; }
+  .nav-toggle-bars::after { top: 7px; }
+  .nav.is-open .nav-toggle-bars { background: transparent; }
+  .nav.is-open .nav-toggle-bars::before { transform: translateY(7px) rotate(45deg); }
+  .nav.is-open .nav-toggle-bars::after { transform: translateY(-7px) rotate(-45deg); }
+
+  @media (max-width: 819px) {
+    :global(.js) .nav-toggle { display: block; }
+    :global(.js) .nav-menu {
+      position: absolute;
+      top: 64px;
+      left: 0;
+      right: 0;
+      flex-direction: column;
+      gap: 0;
+      padding: 8px var(--gutter) 20px;
+      background: rgba(8, 8, 10, .96);
+      border-bottom: 1px solid var(--line);
+      transform: translateY(-8px);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity .2s, transform .25s var(--ease), visibility 0s .25s;
+    }
+    :global(.js) .nav.is-open .nav-menu {
+      transform: none;
+      opacity: 1;
+      visibility: visible;
+      transition: opacity .2s, transform .25s var(--ease);
+    }
+    :global(.js) .nav-menu a {
+      padding: 14px 0;
+      font-size: 1.35rem;
+      border-bottom: 1px solid var(--line);
+    }
+    :global(.js) .nav-menu a:last-child { border-bottom: 0; }
+    :global(.js) .nav-menu a::after { display: none; }
+
+    /* sin JS: links en una fila con scroll */
+    :global(html:not(.js)) .nav-menu { overflow-x: auto; gap: 18px; }
+  }
+</style>
+
+<script>
+  const nav = document.querySelector<HTMLElement>('[data-nav]')!;
+  const toggle = nav.querySelector<HTMLButtonElement>('[data-nav-toggle]')!;
+  const toggleLabel = nav.querySelector<HTMLElement>('[data-nav-toggle-label]')!;
+  const links = Array.from(nav.querySelectorAll<HTMLAnchorElement>('.nav-menu a'));
+
+  const onScroll = () => nav.classList.toggle('is-scrolled', window.scrollY > 24);
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  const setMenu = (open: boolean) => {
+    nav.classList.toggle('is-open', open);
+    toggle.setAttribute('aria-expanded', String(open));
+    toggleLabel.textContent = open ? 'Cerrar menú' : 'Abrir menú';
+  };
+
+  toggle.addEventListener('click', () => setMenu(!nav.classList.contains('is-open')));
+  links.forEach((a) => a.addEventListener('click', () => setMenu(false)));
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && nav.classList.contains('is-open')) {
+      setMenu(false);
+      toggle.focus();
+    }
+  });
+
+  // marca la sección visible en el menú
+  if ('IntersectionObserver' in window) {
+    const byId = new Map(links.map((a) => [a.hash.slice(1), a]));
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          const link = byId.get(entry.target.id);
+          if (!link || !entry.isIntersecting) continue;
+          links.forEach((l) => l.removeAttribute('aria-current'));
+          link.setAttribute('aria-current', 'true');
+        }
+      },
+      { rootMargin: '-45% 0px -50% 0px' },
+    );
+    byId.forEach((_, id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+  }
+</script>

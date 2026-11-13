@@ -1,0 +1,101 @@
+---
+import { Font } from 'astro:assets';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import { artista, redes } from '../data/artista';
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = `${artista.nombre} — Pop rock desde Buenos Aires`,
+  description = artista.descripcion,
+} = Astro.props;
+
+// URL absoluta solo si hay `site` configurado en astro.config.mjs
+const ogImage = Astro.site ? new URL('/og.jpg', Astro.site).href : '/og.jpg';
+const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefined;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'MusicGroup',
+  name: artista.nombre,
+  genre: ['Pop rock', 'Rock nacional'],
+  foundingLocation: artista.origen,
+  member: { '@type': 'Person', name: artista.nombreReal },
+  sameAs: redes.map((r) => r.url),
+};
+---
+
+<!doctype html>
+<html lang="es-AR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#08080a" />
+    {canonical && <link rel="canonical" href={canonical} />}
+
+    <meta property="og:type" content="music.musician" />
+    <meta property="og:title" content={artista.nombre} />
+    <meta property="og:description" content={`Pop rock, rebeldía y crítica social. «${artista.lema}»`} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:locale" content="es_AR" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <script is:inline>document.documentElement.classList.add('js');</script>
+
+    <Font cssVariable="--font-gothic" preload />
+    <Font cssVariable="--font-title" />
+    <Font cssVariable="--font-cond" />
+    <Font cssVariable="--font-body" />
+    <Font cssVariable="--font-mono" />
+
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </head>
+  <body>
+    <a class="skip" href="#musica">Saltar al contenido</a>
+    <Nav />
+    <main id="top">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>
+
+<script>
+  // Aparición suave de bloques al scrollear (solo los que arrancan fuera de pantalla).
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (!reduceMotion && 'IntersectionObserver' in window) {
+    const targets = Array.from(document.querySelectorAll<HTMLElement>('[data-reveal]')).filter(
+      (el) => el.getBoundingClientRect().top > window.innerHeight,
+    );
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          entry.target.classList.add('is-in');
+          observer.unobserve(entry.target);
+        }
+      },
+      { rootMargin: '0px 0px -8% 0px' },
+    );
+
+    for (const el of targets) {
+      el.classList.add('reveal');
+      const delay = Number(el.dataset.reveal);
+      if (delay) el.style.transitionDelay = `${delay}ms`;
+      observer.observe(el);
+    }
+  }
+</script>

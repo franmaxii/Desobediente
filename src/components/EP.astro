@@ -1,0 +1,66 @@
+---
+import SectionHead from './SectionHead.astro';
+import YouTube from './YouTube.astro';
+import { ep } from '../data/musica';
+import { fechaCorta } from '../utils/formato';
+---
+
+<section id="ep" class="section" aria-labelledby="ep-title">
+  <SectionHead id="ep-title" eyebrow={`EP · ${ep.anio}`} title={ep.titulo} sub={ep.bajada} />
+
+  <ol class="ep-grid">
+    {
+      ep.partes.map((p, i) => (
+        <li class="ep-card" data-reveal={i * 90}>
+          <YouTube
+            id={p.youtubeId}
+            title={p.titulo}
+            thumbnail={p.miniatura}
+            widths={[480, 960]}
+            sizes="(min-width: 1160px) 370px, (min-width: 720px) 32vw, 100vw"
+          />
+          <div class="ep-info">
+            <p class="ep-part">
+              {p.parte} · <time datetime={p.fecha}>{fechaCorta(p.fecha)}</time>
+            </p>
+            <h3 class="ep-name">{p.titulo}</h3>
+            <p class="ep-text inline-links" set:html={p.texto} />
+          </div>
+        </li>
+      ))
+    }
+  </ol>
+</section>
+
+<style>
+  .ep-grid {
+    display: grid;
+    gap: 44px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  @media (min-width: 720px) {
+    .ep-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+  }
+
+  .ep-card { display: flex; flex-direction: column; }
+  .ep-info { padding-top: 20px; }
+  .ep-part {
+    margin: 0 0 6px;
+    font-family: var(--f-mono);
+    font-size: .76rem;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--red-text);
+  }
+  .ep-name {
+    margin-bottom: 10px;
+    font-family: var(--f-title);
+    font-weight: 900;
+    font-size: clamp(2.4rem, 4vw, 2.9rem);
+    line-height: 1;
+    color: var(--red);
+  }
+  .ep-text { margin: 0; color: var(--muted); }
+</style>

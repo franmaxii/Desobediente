@@ -1,0 +1,26 @@
+---
+interface Props {
+  eyebrow: string;
+  title: string;
+  /** id del <h2>, para aria-labelledby de la sección */
+  id: string;
+  sub?: string;
+}
+
+const { eyebrow, title, id, sub } = Astro.props;
+---
+
+<header class="section-head" data-reveal>
+  <p class="eyebrow">{eyebrow}</p>
+  <h2 id={id} class="title"><slot>{title}</slot></h2>
+  {sub && <p class="section-sub">{sub}</p>}
+</header>
+
+<style>
+  .section-head { margin-bottom: clamp(36px, 5vw, 60px); }
+  .section-sub {
+    max-width: 52ch;
+    margin: 18px 0 0;
+    color: var(--muted);
+  }
+</style>

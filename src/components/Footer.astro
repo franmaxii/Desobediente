@@ -1,0 +1,48 @@
+---
+import Fuse from './Fuse.astro';
+import { artista } from '../data/artista';
+import { single } from '../data/musica';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="footer-fuse">
+    <Fuse variant="divider" />
+  </div>
+  <p class="footer-mark">desobediente</p>
+  <p class="footer-motto">«{artista.lema}»</p>
+  <p class="footer-legal">© {year} {artista.nombre} · «{single.titulo}» © {single.sello}</p>
+</footer>
+
+<style>
+  .footer {
+    padding: 0 var(--gutter) 120px;
+    text-align: center;
+  }
+  .footer-fuse {
+    max-width: var(--max);
+    margin: 0 auto 72px;
+  }
+  .footer-mark {
+    margin: 0;
+    font-family: var(--f-gothic);
+    font-size: clamp(2.6rem, 8vw, 4.5rem);
+    line-height: 1;
+    color: var(--red);
+  }
+  .footer-motto {
+    margin: 14px 0 26px;
+    font-family: var(--f-cond);
+    font-style: italic;
+    font-size: 1.05rem;
+    color: var(--bone);
+  }
+  .footer-legal {
+    margin: 0;
+    font-family: var(--f-mono);
+    font-size: .74rem;
+    letter-spacing: .06em;
+    color: var(--muted);
+  }
+</style>

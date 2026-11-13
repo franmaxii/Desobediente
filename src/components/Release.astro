@@ -1,0 +1,414 @@
+---
+import { Image, getImage } from 'astro:assets';
+import Fuse from './Fuse.astro';
+import Icon from './Icon.astro';
+import { artista } from '../data/artista';
+import { single } from '../data/musica';
+import { duracion, fechaLarga } from '../utils/formato';
+
+const total = duracion(single.duracionSeg);
+
+// portada en JPG para los controles del sistema (pantalla bloqueada, auriculares)
+const artwork = await getImage({ src: single.portada, width: 512, height: 512, format: 'jpg' });
+---
+
+<section id="musica" class="section release" aria-labelledby="release-title">
+  <div class="release-art" data-reveal>
+    <Image
+      src={single.portada}
+      alt={`Portada de «${single.titulo}»: Desobediente con chaqueta de tiras, título en letras góticas rojas.`}
+      widths={[400, 600, 800]}
+      sizes="(min-width: 1160px) 500px, (min-width: 880px) 45vw, 100vw"
+    />
+  </div>
+
+  <div class="release-body" data-reveal>
+    <p class="eyebrow">{single.etiqueta}</p>
+    <h2 id="release-title" class="title-gothic">{single.titulo}</h2>
+    <p class="lead">{single.texto}</p>
+
+    <div
+      class="player"
+      data-player
+      data-title={single.titulo}
+      data-artist={artista.nombre}
+      data-artwork={artwork.src}
+    >
+      <audio src={single.audio} preload="metadata" data-audio></audio>
+      <button class="player-btn" type="button" aria-label={`Reproducir «${single.titulo}»`} data-toggle>
+        <Icon name="play" class="i-play" />
+        <Icon name="pause" class="i-pause" />
+      </button>
+      <div class="player-track">
+        <div class="player-meta">
+          <span class="player-title">{single.titulo}</span>
+          <span class="player-time"><span data-current>0:00</span> / <span data-duration>{total}</span></span>
+        </div>
+        <Fuse variant="player">
+          <input
+            class="fuse-input"
+            type="range"
+            min="0"
+            max={single.duracionSeg}
+            step="0.1"
+            value="0"
+            aria-label="Posición de la canción"
+            aria-valuetext={`0:00 de ${total}`}
+            data-seek
+          />
+        </Fuse>
+      </div>
+    </div>
+
+    <dl class="credits">
+      <div><dt>Salida</dt><dd><time datetime={single.fecha}>{fechaLarga(single.fecha)}</time></dd></div>
+      <div><dt>Sello</dt><dd>{single.sello}</dd></div>
+      <div><dt>Género</dt><dd>{single.genero}</dd></div>
+      <div><dt>Duración</dt><dd>{total}</dd></div>
+    </dl>
+  </div>
+</section>
+
+<!-- mini reproductor: aparece al scrollear mientras suena -->
+<div class="mini" data-mini hidden>
+  <Image src={single.portada} alt="" width={44} height={44} densities={[1, 2]} />
+  <div class="mini-text">
+    <span class="mini-title">{single.titulo}</span>
+    <span class="mini-artist">{artista.nombre}</span>
+  </div>
+  <button class="mini-btn" type="button" aria-label={`Reproducir «${single.titulo}»`} data-mini-toggle>
+    <Icon name="play" class="i-play" />
+    <Icon name="pause" class="i-pause" />
+  </button>
+  <span class="mini-progress" aria-hidden="true"></span>
+</div>
+
+<style>
+  .release {
+    display: grid;
+    gap: 40px;
+    align-items: center;
+  }
+  @media (min-width: 880px) {
+    .release { grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr); gap: 72px; }
+  }
+
+  .release-art :global(img) {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    box-shadow: 0 30px 90px -20px rgba(169, 212, 234, .28), 0 0 0 1px rgba(255, 255, 255, .06);
+  }
+
+  .release-body .title-gothic {
+    font-size: clamp(4rem, 11vw, 7.5rem);
+    margin-bottom: 20px;
+  }
+
+  /* ---------- reproductor ---------- */
+  .player {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin: 32px 0 28px;
+    padding: 18px 20px 14px 18px;
+    background: var(--bg-2);
+    border: 1px solid var(--line);
+    border-radius: 2px;
+  }
+
+  .player-btn,
+  .mini-btn {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 56px;
+    height: 56px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: var(--red);
+    color: #fff;
+    cursor: pointer;
+    transition: background-color .2s, transform .2s var(--ease);
+  }
+  .player-btn:hover,
+  .mini-btn:hover { background: #ff2a33; transform: scale(1.05); }
+  .player-btn :global(svg),
+  .mini-btn :global(svg) { width: 22px; height: 22px; }
+  .player-btn :global(.i-play),
+  .mini-btn :global(.i-play) { transform: translateX(1px); }
+
+  .player-track { flex: 1; min-width: 0; }
+
+  .player-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+  }
+  .player-title {
+    font-family: var(--f-cond);
+    font-size: 1.15rem;
+    font-weight: 600;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+  }
+  .player-time {
+    font-family: var(--f-mono);
+    font-size: .8rem;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* el input real va encima de la mecha: invisible pero accesible */
+  .fuse-input {
+    position: absolute;
+    top: 0;
+    left: -12px;
+    width: calc(100% + 24px);
+    height: 100%;
+    margin: 0;
+    background: transparent;
+    cursor: pointer;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+  .fuse-input::-webkit-slider-runnable-track { height: 100%; background: transparent; }
+  .fuse-input::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 24px;
+    height: 24px;
+    border: 0;
+    background: transparent;
+  }
+  .fuse-input::-moz-range-track { height: 100%; background: transparent; }
+  .fuse-input::-moz-range-thumb {
+    width: 24px;
+    height: 24px;
+    border: 0;
+    background: transparent;
+  }
+  .fuse-input:focus-visible { outline-offset: 2px; }
+
+  /* ---------- créditos ---------- */
+  .credits {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px 24px;
+    margin: 0;
+    padding-top: 22px;
+    border-top: 1px solid var(--line);
+  }
+  @media (min-width: 560px) {
+    .credits { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  }
+  .credits dt {
+    font-family: var(--f-mono);
+    font-size: .72rem;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .credits dd {
+    margin: 4px 0 0;
+    font-family: var(--f-cond);
+    font-size: 1.2rem;
+    font-weight: 600;
+  }
+
+  /* ---------- mini reproductor ---------- */
+  .mini {
+    position: fixed;
+    left: 50%;
+    bottom: 16px;
+    z-index: 60;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: min(380px, calc(100% - 32px));
+    padding: 8px;
+    background: rgba(17, 17, 20, .94);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, .6);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    overflow: hidden;
+    transform: translate(-50%, calc(100% + 32px));
+    transition: transform .4s var(--ease);
+  }
+  .mini.is-visible { transform: translate(-50%, 0); }
+  .mini[hidden] { display: none; }
+  .mini :global(img) { width: 44px; height: 44px; object-fit: cover; flex: none; }
+  .mini-text { flex: 1; min-width: 0; display: flex; flex-direction: column; line-height: 1.2; }
+  .mini-title {
+    font-family: var(--f-cond);
+    font-size: 1.05rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+  }
+  .mini-artist { font-size: .85rem; color: var(--muted); }
+  .mini-btn { width: 44px; height: 44px; }
+  .mini-btn :global(svg) { width: 18px; height: 18px; }
+  .mini-progress {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 2px;
+    width: calc(var(--p) * 100%);
+    background: linear-gradient(90deg, var(--red-deep), var(--red) 85%, #ffb347);
+  }
+</style>
+
+<script>
+  import { duracion as fmt } from '../utils/formato';
+
+  const player = document.querySelector<HTMLElement>('[data-player]')!;
+  const audio = player.querySelector<HTMLAudioElement>('[data-audio]')!;
+  const toggleBtn = player.querySelector<HTMLButtonElement>('[data-toggle]')!;
+  const seek = player.querySelector<HTMLInputElement>('[data-seek]')!;
+  const fuse = player.querySelector<HTMLElement>('[data-fuse="player"]')!;
+  const curEl = player.querySelector<HTMLElement>('[data-current]')!;
+  const durEl = player.querySelector<HTMLElement>('[data-duration]')!;
+  const mini = document.querySelector<HTMLElement>('[data-mini]')!;
+  const miniBtn = mini.querySelector<HTMLButtonElement>('[data-mini-toggle]')!;
+  const heroBtn = document.querySelector<HTMLButtonElement>('[data-play-main]');
+  const heroLabel = document.querySelector<HTMLElement>('[data-play-label]');
+
+  const { title = '', artist = '', artwork = '' } = player.dataset;
+
+  let seeking = false;
+  let raf = 0;
+  let playerInView = true;
+  let heroBtnInView = Boolean(heroBtn);
+
+  const duration = () =>
+    Number.isFinite(audio.duration) && audio.duration > 0 ? audio.duration : Number(seek.max);
+
+  const setProgress = (p: number) => {
+    const v = Math.min(1, Math.max(0, p)).toFixed(4);
+    fuse.style.setProperty('--p', v);
+    mini.style.setProperty('--p', v);
+  };
+
+  const render = () => {
+    const d = duration();
+    const t = audio.currentTime;
+    setProgress(t / d);
+    if (!seeking) seek.value = String(t);
+    curEl.textContent = fmt(t);
+    seek.setAttribute('aria-valuetext', `${fmt(t)} de ${fmt(d)}`);
+  };
+
+  const loop = () => {
+    render();
+    raf = requestAnimationFrame(loop);
+  };
+
+  // el mini aparece solo si no hay otro control de play a la vista
+  const updateMini = () => {
+    const show = player.classList.contains('has-started') && !playerInView && !heroBtnInView;
+    mini.classList.toggle('is-visible', show);
+    mini.inert = !show;
+  };
+
+  const setPlayingUI = (playing: boolean) => {
+    const label = `${playing ? 'Pausar' : 'Reproducir'} «${title}»`;
+    [player, mini, heroBtn].forEach((el) => el?.classList.toggle('is-playing', playing));
+    toggleBtn.setAttribute('aria-label', label);
+    miniBtn.setAttribute('aria-label', label);
+    if (heroLabel) heroLabel.textContent = playing ? `Pausar «${title}»` : `Escuchá «${title}»`;
+  };
+
+  const togglePlay = () => {
+    if (audio.paused) audio.play().catch(() => setPlayingUI(false));
+    else audio.pause();
+  };
+
+  audio.addEventListener('loadedmetadata', () => {
+    seek.max = String(audio.duration);
+    durEl.textContent = fmt(audio.duration);
+    render();
+  });
+
+  audio.addEventListener('play', () => {
+    player.classList.add('has-started');
+    player.classList.remove('is-ended');
+    setPlayingUI(true);
+    updateMini();
+    cancelAnimationFrame(raf);
+    raf = requestAnimationFrame(loop);
+  });
+
+  audio.addEventListener('pause', () => {
+    setPlayingUI(false);
+    cancelAnimationFrame(raf);
+    render();
+  });
+
+  audio.addEventListener('ended', () => {
+    player.classList.add('is-ended');
+    audio.currentTime = 0;
+    render();
+  });
+
+  audio.addEventListener('timeupdate', () => {
+    if (audio.paused) render();
+  });
+
+  toggleBtn.addEventListener('click', togglePlay);
+  miniBtn.addEventListener('click', togglePlay);
+  heroBtn?.addEventListener('click', togglePlay);
+
+  seek.addEventListener('input', () => {
+    seeking = true;
+    const t = Number(seek.value);
+    setProgress(t / duration());
+    curEl.textContent = fmt(t);
+    player.classList.add('has-started');
+  });
+  seek.addEventListener('change', () => {
+    audio.currentTime = Number(seek.value);
+    seeking = false;
+    render();
+  });
+
+  // si arranca un videoclip, la canción se pausa
+  document.addEventListener('video:play', () => audio.pause());
+
+  mini.hidden = false;
+  mini.inert = true;
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.target === player) playerInView = entry.isIntersecting;
+          if (entry.target === heroBtn) heroBtnInView = entry.isIntersecting;
+        }
+        updateMini();
+      },
+      { threshold: 0 },
+    );
+    observer.observe(player);
+    if (heroBtn) observer.observe(heroBtn);
+  } else {
+    playerInView = heroBtnInView = false;
+  }
+
+  if ('mediaSession' in navigator) {
+    navigator.mediaSession.metadata = new MediaMetadata({
+      title,
+      artist,
+      album: title,
+      artwork: artwork ? [{ src: new URL(artwork, location.href).href, sizes: '512x512', type: 'image/jpeg' }] : [],
+    });
+    navigator.mediaSession.setActionHandler('play', () => void audio.play());
+    navigator.mediaSession.setActionHandler('pause', () => audio.pause());
+    navigator.mediaSession.setActionHandler('seekto', (d) => {
+      if (d.seekTime != null) audio.currentTime = d.seekTime;
+      render();
+    });
+  }
+</script>
