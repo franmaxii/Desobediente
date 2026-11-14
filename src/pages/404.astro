@@ -1,0 +1,36 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Fuse from '../components/Fuse.astro';
+import { artista } from '../data/artista';
+---
+
+<Layout title={`Página no encontrada — ${artista.alias[0]}`} noindex reacciones={false}>
+  <section id="contenido" class="perdida" aria-labelledby="perdida-title">
+    <p class="eyebrow">Error 404</p>
+    <h1 id="perdida-title" class="title-gothic">Se quemó la mecha</h1>
+    <p class="lead">Esta página no existe, o ya voló por los aires.</p>
+    <div class="perdida-fuse"><Fuse variant="burnt" /></div>
+    <a class="btn btn-red" href="/">Volver al inicio</a>
+  </section>
+</Layout>
+
+<style>
+  .perdida {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100svh;
+    padding: 104px var(--gutter) 64px;
+    text-align: center;
+  }
+  .perdida .title-gothic {
+    font-size: clamp(3.2rem, 11vw, 7rem);
+    margin-bottom: 18px;
+  }
+  .perdida .lead { color: var(--muted); }
+  .perdida-fuse {
+    width: min(420px, 100%);
+    margin: 24px 0 36px;
+  }
+</style>

@@ -30,6 +30,7 @@ export const single = {
   titulo: 'Tik Tak',
   fecha: '2026-04-13',
   sello: 'CR Musik',
+  isrc: 'QZHN92652260',
   genero: 'Pop / Rock',
   duracionSeg: 200,
   audio: tikTakAudio,

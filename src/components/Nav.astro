@@ -1,4 +1,7 @@
 ---
+// fuera del inicio (ej. la 404) los links vuelven a la home
+const base = Astro.url.pathname === '/' ? '' : '/';
+
 const links = [
   { href: '#musica', label: 'Música' },
   { href: '#ep', label: 'EP' },
@@ -6,11 +9,11 @@ const links = [
   { href: '#libro', label: 'Libro' },
   { href: '#bio', label: 'Bio' },
   { href: '#redes', label: 'Redes' },
-];
+].map((l) => ({ ...l, href: `${base}${l.href}` }));
 ---
 
 <header class="nav" data-nav>
-  <a class="nav-logo" href="#top" aria-label="Desobediente, inicio">desobediente</a>
+  <a class="nav-logo" href={base ? '/' : '#top'} aria-label="Desobediente, inicio">desobediente</a>
   <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu" data-nav-toggle>
     <span class="sr-only" data-nav-toggle-label>Abrir menú</span>
     <span class="nav-toggle-bars" aria-hidden="true"></span>

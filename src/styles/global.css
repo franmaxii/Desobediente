@@ -306,6 +306,9 @@ h1, h2, h3 { margin: 0; font-weight: 700; }
 /* variante: separador (soga entera) */
 .fuse--divider { --p: 0; }
 
+/* variante: quemada (404) */
+.fuse--burnt { --p: 1; }
+
 /* ---------- aparición al scrollear ---------- */
 .reveal {
   opacity: 0;

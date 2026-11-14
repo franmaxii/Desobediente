@@ -2,32 +2,34 @@
 import { Font } from 'astro:assets';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
-import { artista, redes } from '../data/artista';
+import Reacciones from '../components/Reacciones.astro';
+import { artista } from '../data/artista';
 import '../styles/global.css';
 
 interface Props {
   title?: string;
   description?: string;
+  /** Datos estructurados (JSON-LD) de la página. */
+  jsonLd?: object;
+  /** Para páginas que no deben aparecer en Google (ej. 404). */
+  noindex?: boolean;
+  /** Muestra el botón flotante de corazones. */
+  reacciones?: boolean;
 }
 
 const {
-  title = `${artista.nombre} — Pop rock desde Buenos Aires`,
+  title = artista.titulo,
   description = artista.descripcion,
+  jsonLd,
+  noindex = false,
+  reacciones = true,
 } = Astro.props;
 
-// URL absoluta solo si hay `site` configurado en astro.config.mjs
-const ogImage = Astro.site ? new URL('/og.jpg', Astro.site).href : '/og.jpg';
-const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefined;
-
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'MusicGroup',
-  name: artista.nombre,
-  genre: ['Pop rock', 'Rock nacional'],
-  foundingLocation: artista.origen,
-  member: { '@type': 'Person', name: artista.nombreReal },
-  sameAs: redes.map((r) => r.url),
-};
+const sitio = Astro.site ?? new URL(Astro.url.origin);
+const canonical = new URL(Astro.url.pathname, sitio).href;
+const ogImage = new URL('/og.jpg', sitio).href;
+const ogAlt = `${artista.nombre} en la portada del videoclip de «Tik Tak».`;
+const esInicio = Astro.url.pathname === '/';
 ---
 
 <!doctype html>
@@ -38,18 +40,35 @@ const jsonLd = {
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <meta name="author" content={`${artista.nombreReal} (${artista.nombre})`} />
+    <meta name="robots" content={noindex ? 'noindex, follow' : 'index, follow, max-image-preview:large'} />
+    {!noindex && <link rel="canonical" href={canonical} />}
     <meta name="theme-color" content="#08080a" />
-    {canonical && <link rel="canonical" href={canonical} />}
 
+    <!-- vista previa al compartir -->
     <meta property="og:type" content="music.musician" />
-    <meta property="og:title" content={artista.nombre} />
-    <meta property="og:description" content={`Pop rock, rebeldía y crítica social. «${artista.lema}»`} />
-    <meta property="og:image" content={ogImage} />
+    <meta property="og:site_name" content={artista.nombre} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
     <meta property="og:locale" content="es_AR" />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="675" />
+    <meta property="og:image:alt" content={ogAlt} />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image:alt" content={ogAlt} />
 
-    <link rel="icon" type="image/png" href="/favicon.png" />
+    <!-- íconos (Google pide múltiplos de 48 px) -->
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" type="image/png" href="/favicon-96.png" sizes="96x96" />
+    <link rel="icon" type="image/png" href="/favicon-192.png" sizes="192x192" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
 
     <script is:inline>document.documentElement.classList.add('js');</script>
 
@@ -59,15 +78,16 @@ const jsonLd = {
     <Font cssVariable="--font-body" />
     <Font cssVariable="--font-mono" />
 
-    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
   </head>
   <body>
-    <a class="skip" href="#musica">Saltar al contenido</a>
+    <a class="skip" href={esInicio ? '#musica' : '#contenido'}>Saltar al contenido</a>
     <Nav />
     <main id="top">
       <slot />
     </main>
     <Footer />
+    {reacciones && <Reacciones />}
   </body>
 </html>
 

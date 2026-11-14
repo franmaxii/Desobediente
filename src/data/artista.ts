@@ -1,11 +1,14 @@
 export const artista = {
   nombre: 'Desobediente',
+  /** Cómo la buscan: la palabra clave principal es «Desobediente 13». */
+  alias: ['Desobediente 13', 'Desobediente13', '13desobediente'],
   nombreReal: 'Milena García',
   origen: 'Buenos Aires, Argentina',
   anioNacimiento: 2006,
   lema: 'Fijate de qué lado de la mecha te encontrás.',
+  titulo: 'Desobediente 13 — Milena García, pop rock de Buenos Aires',
   descripcion:
-    'Desobediente (Milena García): cantante, actriz, escritora y guitarrista de Buenos Aires. Pop rock, rebeldía y crítica social. Escuchá «Tik Tak», mirá los videoclips y leé «Este libro fue escrito por uno o más locos».',
+    'Sitio oficial de Desobediente 13 (Milena García): pop rock, rebeldía y crítica social desde Buenos Aires. Escuchá «Tik Tak», mirá los videoclips del EP y leé su libro.',
   oficios: [
     'Cantante',
     'actriz',

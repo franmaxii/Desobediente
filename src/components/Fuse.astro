@@ -4,17 +4,19 @@
  * - hero: se quema sola en loop
  * - player: la quema el audio; el <input> de búsqueda va en el slot
  * - divider: soga entera, sin chispa
+ * - burnt: ya se quemó toda (página 404)
  */
 interface Props {
-  variant: 'hero' | 'player' | 'divider';
+  variant: 'hero' | 'player' | 'divider' | 'burnt';
 }
 
 const { variant } = Astro.props;
 const decorative = variant !== 'player';
+const conChispa = variant === 'hero' || variant === 'player';
 ---
 
 <div class={`fuse fuse--${variant}`} aria-hidden={decorative ? 'true' : undefined} data-fuse={variant}>
   <span class="fuse-rope"></span>
-  {variant !== 'divider' && <span class="fuse-spark"></span>}
+  {conChispa && <span class="fuse-spark"></span>}
   <slot />
 </div>

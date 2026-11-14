@@ -1,11 +1,17 @@
 // @ts-check
 import { defineConfig, fontProviders } from 'astro/config';
+import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
-  // Cuando haya dominio, completalo acá (ej. 'https://tudominio.com').
-  // Se usa para las URLs absolutas de la vista previa al compartir (og:image).
-  // site: 'https://…',
+  // Dominio oficial: se usa para la URL canónica, el sitemap y la vista previa al compartir.
+  site: 'https://desobediente.franmaxi.lol',
+
+  integrations: [
+    sitemap({
+      filter: (page) => !page.includes('/404'),
+    }),
+  ],
 
   // Las fuentes se descargan en el build y se sirven desde el propio sitio.
   fonts: [

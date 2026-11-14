@@ -1,0 +1,300 @@
+---
+/**
+ * Botón flotante de corazones con contador global (lo guarda /api/reacciones).
+ * Corazón de cristal quebrado — «yo estoy hecha de pedazos de cristal» —
+ * que late en dos tiempos, tik tak.
+ */
+const CORAZON =
+  'M16 28.5C16 28.5 3 20.8 3 12.4C3 8.3 6.1 5.5 9.6 5.5C12.3 5.5 14.6 7 16 9.2C17.4 7 19.7 5.5 22.4 5.5C25.9 5.5 29 8.3 29 12.4C29 20.8 16 28.5 16 28.5Z';
+const GRIETA = '16,9.2 14.2,12.8 17.4,16.2 14.6,19.6 16.8,23 16,28.5';
+---
+
+<!-- dibujos reutilizables (no usa display:none para que los degradados funcionen) -->
+<svg class="defs" width="0" height="0" aria-hidden="true" focusable="false">
+  <defs>
+    <linearGradient id="dsb-rojo-a" x1="0" y1="0" x2=".6" y2="1">
+      <stop offset="0" stop-color="#ff4a4a" />
+      <stop offset="1" stop-color="#b30f16" />
+    </linearGradient>
+    <linearGradient id="dsb-rojo-b" x1=".4" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e3151e" />
+      <stop offset="1" stop-color="#6e080d" />
+    </linearGradient>
+    <linearGradient id="dsb-hielo" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e6f5fc" />
+      <stop offset="1" stop-color="#7fb8d6" />
+    </linearGradient>
+    <clipPath id="dsb-mitad-izq"><polygon points={`0,0 16,0 ${GRIETA} 16,32 0,32`} /></clipPath>
+    <clipPath id="dsb-mitad-der"><polygon points={`16,0 32,0 32,32 16,32 ${GRIETA.split(' ').reverse().join(' ')}`} /></clipPath>
+  </defs>
+
+  <symbol id="dsb-corazon-roto" viewBox="0 0 32 32">
+    <g clip-path="url(#dsb-mitad-izq)"><path d={CORAZON} fill="url(#dsb-rojo-a)" /></g>
+    <g clip-path="url(#dsb-mitad-der)" transform="translate(.9 .4) rotate(4 16 16)">
+      <path d={CORAZON} fill="url(#dsb-rojo-b)" />
+    </g>
+    <path d="M7.2 9.6c.9-1.6 2.5-2.3 4-1.9" fill="none" stroke="#ffd6d6" stroke-opacity=".75" stroke-width="1.2" stroke-linecap="round" />
+    <polygon points="21.4,8.8 24.6,8.6 22.6,11.4" fill="#fff" fill-opacity=".35" />
+  </symbol>
+
+  <symbol id="dsb-corazon" viewBox="0 0 32 32">
+    <path d={CORAZON} fill="url(#dsb-rojo-a)" />
+    <path d="M7.2 9.6c.9-1.6 2.5-2.3 4-1.9" fill="none" stroke="#ffd6d6" stroke-opacity=".7" stroke-width="1.2" stroke-linecap="round" />
+  </symbol>
+
+  <symbol id="dsb-cristal" viewBox="0 0 32 32">
+    <polygon points="15,3 23,15 16,29 9,14" fill="url(#dsb-hielo)" fill-opacity=".85" stroke="#fff" stroke-opacity=".6" stroke-width=".8" />
+    <polyline points="15,3 16,16 16,29" fill="none" stroke="#fff" stroke-opacity=".45" stroke-width=".6" />
+  </symbol>
+</svg>
+
+<div class="reacciones" data-reacciones>
+  <div class="reacciones-capa" aria-hidden="true" data-capa></div>
+  <button class="reacciones-btn" type="button" aria-label="Dejar un corazón" data-reaccionar>
+    <svg viewBox="0 0 32 32" aria-hidden="true"><use href="#dsb-corazon-roto" /></svg>
+  </button>
+  <span class="reacciones-total" aria-hidden="true" data-total hidden></span>
+  <span class="sr-only" aria-live="polite" data-anuncio></span>
+</div>
+
+<style>
+  .defs { position: absolute; width: 0; height: 0; overflow: hidden; }
+
+  .reacciones {
+    position: fixed;
+    right: max(16px, env(safe-area-inset-right));
+    bottom: max(16px, env(safe-area-inset-bottom));
+    z-index: 61;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    transition: bottom .4s var(--ease);
+  }
+  /* en celulares, sube cuando aparece el mini reproductor */
+  @media (max-width: 559px) {
+    :global(body:has(.mini.is-visible)) .reacciones { bottom: 92px; }
+  }
+
+  .reacciones-btn {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 58px;
+    height: 58px;
+    padding: 0;
+    border: 1px solid rgba(227, 21, 30, .45);
+    border-radius: 50%;
+    background: radial-gradient(circle at 50% 35%, #1d1d22, #0c0c0f 70%);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, .55), 0 0 24px rgba(227, 21, 30, .18);
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    transition: border-color .2s, box-shadow .2s, transform .15s var(--ease);
+  }
+  .reacciones-btn:hover {
+    border-color: var(--red);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, .55), 0 0 30px rgba(227, 21, 30, .35);
+  }
+  .reacciones-btn:active { transform: scale(.92); }
+
+  .reacciones-btn svg {
+    width: 32px;
+    height: 32px;
+    overflow: visible;
+    filter: drop-shadow(0 2px 6px rgba(227, 21, 30, .45));
+    animation: latido 6.5s ease-in-out infinite;
+  }
+  .reacciones-btn.is-pulso svg { animation: pulso .32s ease-out; }
+
+  /* tik tak: dos latidos y silencio */
+  @keyframes latido {
+    0%, 9%, 100% { transform: scale(1); }
+    2%   { transform: scale(1.16); }
+    4%   { transform: scale(1); }
+    6.5% { transform: scale(1.1); }
+  }
+  @keyframes pulso {
+    0%   { transform: scale(1); }
+    40%  { transform: scale(1.28); }
+    100% { transform: scale(1); }
+  }
+
+  .reacciones-total {
+    min-width: 34px;
+    padding: 2px 9px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: rgba(17, 17, 20, .92);
+    font-family: var(--f-mono);
+    font-size: .74rem;
+    line-height: 1.5;
+    text-align: center;
+    color: var(--bone);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .reacciones-capa {
+    position: absolute;
+    left: 50%;
+    top: 29px;
+    width: 0;
+    height: 0;
+    overflow: visible;
+    pointer-events: none;
+  }
+  .reacciones-capa :global(.particula) {
+    position: absolute;
+    left: -14px;
+    top: -14px;
+    width: 28px;
+    height: 28px;
+    overflow: visible;
+    will-change: transform, opacity;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reacciones-btn svg,
+    .reacciones-btn.is-pulso svg { animation: none; }
+  }
+</style>
+
+<script>
+  const raiz = document.querySelector<HTMLElement>('[data-reacciones]');
+
+  if (raiz) {
+    const API = '/api/reacciones';
+    const MAX_POR_PEDIDO = 25;
+    const MAX_PARTICULAS = 36;
+    const SVG_NS = 'http://www.w3.org/2000/svg';
+    const TIPOS = ['corazon-roto', 'corazon-roto', 'corazon-roto', 'corazon', 'corazon', 'cristal'];
+
+    const boton = raiz.querySelector<HTMLButtonElement>('[data-reaccionar]')!;
+    const capa = raiz.querySelector<HTMLElement>('[data-capa]')!;
+    const totalEl = raiz.querySelector<HTMLElement>('[data-total]')!;
+    const anuncio = raiz.querySelector<HTMLElement>('[data-anuncio]')!;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const numero = new Intl.NumberFormat('es-AR');
+    const compacto = new Intl.NumberFormat('es-AR', { notation: 'compact', maximumFractionDigits: 1 });
+    const formatear = (n: number) => (n < 100_000 ? numero.format(n) : compacto.format(n));
+
+    let apiDisponible = false;
+    let total = 0; // lo que confirmó el servidor
+    let pendientes = 0; // toques todavía sin enviar
+    let enVuelo = 0; // toques enviados, esperando respuesta
+    let timer = 0;
+
+    const mostrar = () => {
+      if (!apiDisponible) return;
+      const visible = total + pendientes + enVuelo;
+      totalEl.hidden = false;
+      totalEl.textContent = formatear(visible);
+      boton.setAttribute('aria-label', `Dejar un corazón. Van ${numero.format(visible)} corazones`);
+    };
+
+    const enviar = async () => {
+      if (!apiDisponible || pendientes === 0 || enVuelo > 0) return;
+      const cantidad = Math.min(pendientes, MAX_POR_PEDIDO);
+      pendientes -= cantidad;
+      enVuelo = cantidad;
+      try {
+        const res = await fetch(API, {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ cantidad }),
+        });
+        const data = (await res.json()) as { total?: number };
+        if (typeof data.total === 'number') total = data.total;
+        anuncio.textContent = res.ok
+          ? `Gracias. Van ${numero.format(total)} corazones.`
+          : 'Muchos corazones seguidos. Esperá un minuto.';
+      } catch {
+        // sin conexión: se pierde este lote, el número se corrige en la próxima carga
+      } finally {
+        enVuelo = 0;
+        mostrar();
+        if (pendientes > 0) programarEnvio();
+      }
+    };
+
+    const programarEnvio = () => {
+      window.clearTimeout(timer);
+      timer = window.setTimeout(enviar, pendientes >= MAX_POR_PEDIDO ? 0 : 650);
+    };
+
+    const particula = () => {
+      if (reduceMotion || capa.childElementCount >= MAX_PARTICULAS) return;
+      const tipo = TIPOS[Math.floor(Math.random() * TIPOS.length)];
+      const svg = document.createElementNS(SVG_NS, 'svg');
+      svg.setAttribute('viewBox', '0 0 32 32');
+      svg.classList.add('particula');
+      const use = document.createElementNS(SVG_NS, 'use');
+      use.setAttribute('href', `#dsb-${tipo}`);
+      svg.append(use);
+      capa.append(svg);
+
+      // el botón está contra el borde derecho: los corazones se abren hacia la izquierda
+      const dx = -10 - Math.random() * 80 + (Math.random() < 0.3 ? 30 : 0);
+      const alto = 150 + Math.random() * 130;
+      const giro = (Math.random() - 0.5) * 70;
+      const escala = tipo === 'cristal' ? 0.45 + Math.random() * 0.3 : 0.7 + Math.random() * 0.6;
+      const animacion = svg.animate(
+        [
+          { transform: `translate(0, 0) scale(${escala * 0.4}) rotate(0deg)`, opacity: 0 },
+          {
+            transform: `translate(${dx * 0.2}px, -${alto * 0.15}px) scale(${escala}) rotate(${giro * 0.3}deg)`,
+            opacity: 1,
+            offset: 0.15,
+          },
+          {
+            transform: `translate(${dx * 0.7}px, -${alto * 0.65}px) scale(${escala * 0.95}) rotate(${giro * 0.8}deg)`,
+            opacity: 0.85,
+            offset: 0.65,
+          },
+          { transform: `translate(${dx}px, -${alto}px) scale(${escala * 0.85}) rotate(${giro}deg)`, opacity: 0 },
+        ],
+        { duration: 1400 + Math.random() * 700, easing: 'cubic-bezier(.25, .6, .3, 1)' },
+      );
+      animacion.onfinish = () => svg.remove();
+    };
+
+    const latir = () => {
+      boton.classList.remove('is-pulso');
+      void boton.offsetWidth; // reinicia la animación
+      boton.classList.add('is-pulso');
+    };
+
+    boton.addEventListener('click', () => {
+      particula();
+      if (Math.random() < 0.35) particula();
+      latir();
+      if (!apiDisponible) return;
+      pendientes += 1;
+      mostrar();
+      programarEnvio();
+    });
+
+    // si se va de la página con toques sin enviar, los manda igual
+    window.addEventListener('pagehide', () => {
+      if (!apiDisponible || pendientes === 0) return;
+      const cuerpo = new Blob([JSON.stringify({ cantidad: Math.min(pendientes, MAX_POR_PEDIDO) })], {
+        type: 'application/json',
+      });
+      navigator.sendBeacon(API, cuerpo);
+      pendientes = 0;
+    });
+
+    // trae el total actual; si la API no está (ej. `astro dev`), el botón anda igual sin número
+    fetch(API, { headers: { accept: 'application/json' } })
+      .then((res) => (res.ok ? (res.json() as Promise<{ total?: number }>) : null))
+      .then((data) => {
+        if (data && typeof data.total === 'number') {
+          apiDisponible = true;
+          total = data.total;
+          mostrar();
+        }
+      })
+      .catch(() => {});
+  }
+</script>
