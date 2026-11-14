@@ -1,11 +1,15 @@
 # Fotos de las galerías (Modelo y En vivo)
 
-Las fotos de esta carpeta aparecen solas en la sección «Modelo» del sitio (y su link en el menú).
-Hay otra carpeta igual para la sección «En vivo»: `src/assets/en-vivo/`.
+Las fotos de `src/assets/modelo/` aparecen solas en la sección «Modelo» y las de
+`src/assets/en-vivo/` en «En vivo» (cada una con su link en el menú).
 Si una carpeta queda sin fotos, su sección no se muestra.
 
-- Formatos: `.jpg`, `.png`, `.webp` o `.avif`. Cualquier tamaño: Astro las optimiza.
-- Mejor en la mayor resolución posible (las de Instagram vienen achicadas).
-- **Orden**: por nombre de archivo. Usá prefijos: `01-...`, `02-...`.
+- **Cantidad**: la grilla es pareja (4 columnas en compu, 2 en celular). Para que forme
+  un rectángulo completo, usá múltiplos de 4: 4, 8, 12…
+- **Orden**: por el número del nombre (`01-...`, `02-...`), aunque estén en subcarpetas distintas.
 - **Descripción** (accesibilidad y Google): sale del nombre, sin el número.
-  `03-backstage-sillon-verde.jpg` → «Desobediente, foto de modelaje: backstage sillon verde».
+  `03-piloto-en-la-ventana.jpg` → «Desobediente, foto de modelaje: piloto en la ventana».
+- **Crédito del fotógrafo**: poné la foto en una subcarpeta con su nombre
+  (`ivo-barrios/`, `dado-producciones/`). Para sumar otro fotógrafo, agregalo en
+  `src/data/galerias.ts` → `fotografos`.
+- Formatos: `.jpg`, `.png`, `.webp` o `.avif`, en la mayor resolución posible.

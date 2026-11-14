@@ -1,0 +1,202 @@
+---
+import { Image } from 'astro:assets';
+import SectionHead from './SectionHead.astro';
+import { obras } from '../data/actuacion';
+---
+
+<section id="actriz" class="section" aria-labelledby="actriz-title">
+  <SectionHead id="actriz-title" eyebrow="Actriz" title="En pantalla" />
+
+  <div class="obras">
+    {
+      obras.map((o, i) => (
+        <article class:list={['obra', { 'obra--invertida': i % 2 === 1, 'obra--vertical': o.imagenVertical }]} aria-labelledby={`obra-${i}`}>
+          <div class="obra-imagen" data-reveal>
+            <Image
+              src={o.imagen}
+              alt={o.imagenAlt}
+              widths={o.imagenVertical ? [360, 540, 720] : [480, 720, 960, 1280]}
+              sizes={o.imagenVertical ? '(min-width: 880px) 380px, 80vw' : '(min-width: 880px) 560px, 100vw'}
+            />
+            {o.detrasDeEscena && (
+              <div class="detras">
+                <p class="detras-titulo">Detrás de escena</p>
+                <ul>
+                  {o.detrasDeEscena.map((d) => (
+                    <li>
+                      <Image src={d.src} alt={d.alt} widths={[240, 360]} sizes="(min-width: 880px) 180px, 31vw" />
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+
+          <div class="obra-cuerpo" data-reveal>
+            <p class="eyebrow">
+              {o.formato} · {o.genero}
+              {o.personaje && ' · Protagonista'}
+            </p>
+            <h3 id={`obra-${i}`} class="title-gothic obra-titulo">{o.titulo}</h3>
+            {o.personaje && (
+              <p class="obra-personaje">
+                Como <strong>{o.personaje}</strong>
+              </p>
+            )}
+            <p class="lead">{o.sinopsis}</p>
+
+            {o.cita && (
+              <figure class="obra-cita">
+                <blockquote>
+                  <p>«{o.cita}»</p>
+                </blockquote>
+                <figcaption>— Milena, sobre {o.personaje}</figcaption>
+              </figure>
+            )}
+
+            {o.equipo && (
+              <div class="equipo">
+                <dl>
+                  {o.equipo.map((c) => (
+                    <div>
+                      <dt>{c.rol}</dt>
+                      <dd class="inline-links">
+                        <a href={`https://www.instagram.com/${c.instagram}`} target="_blank" rel="noopener">
+                          @{c.instagram}
+                        </a>
+                      </dd>
+                    </div>
+                  ))}
+                </dl>
+                {o.notaEquipo && <p class="equipo-nota">{o.notaEquipo}</p>}
+              </div>
+            )}
+          </div>
+        </article>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .obras {
+    display: grid;
+    gap: clamp(64px, 9vw, 120px);
+  }
+
+  .obra {
+    display: grid;
+    gap: 36px;
+    align-items: center;
+  }
+  @media (min-width: 880px) {
+    .obra { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 64px; }
+    .obra--vertical { grid-template-columns: minmax(0, .72fr) minmax(0, 1.28fr); }
+    .obra--invertida .obra-imagen { order: 2; }
+  }
+
+  .obra-imagen :global(img) {
+    width: 100%;
+    box-shadow: 0 30px 80px -30px rgba(0, 0, 0, .8), 0 0 0 1px rgba(255, 255, 255, .06);
+  }
+  .obra--vertical .obra-imagen {
+    width: min(380px, 80vw);
+    margin: 0 auto;
+  }
+  .obra--vertical .obra-imagen :global(img) {
+    box-shadow: 0 40px 90px -30px rgba(227, 21, 30, .35), 0 0 0 1px rgba(255, 255, 255, .06);
+  }
+
+  .detras { margin-top: 14px; }
+  .detras-titulo {
+    margin: 0 0 8px;
+    font-family: var(--f-mono);
+    font-size: .72rem;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .detras ul {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .detras :global(img) {
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    box-shadow: none;
+    filter: saturate(.9);
+  }
+
+  .obra-titulo {
+    margin-bottom: 10px;
+    font-size: clamp(2.8rem, 6vw, 4.4rem);
+  }
+  .obra-personaje {
+    margin: 0 0 18px;
+    font-family: var(--f-cond);
+    font-size: 1.25rem;
+    font-weight: 500;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .obra-personaje strong { color: var(--bone); font-weight: 700; }
+
+  .obra-cita {
+    margin: 28px 0 0;
+    padding: 4px 0 4px 22px;
+    border-left: 2px solid var(--red);
+  }
+  .obra-cita blockquote { margin: 0; }
+  .obra-cita blockquote p {
+    margin: 0 0 8px;
+    font-size: clamp(1.25rem, 2.2vw, 1.5rem);
+    font-style: italic;
+    line-height: 1.35;
+    color: var(--bone);
+  }
+  .obra-cita figcaption {
+    font-family: var(--f-mono);
+    font-size: .76rem;
+    letter-spacing: .04em;
+    color: var(--muted);
+  }
+
+  .equipo {
+    margin-top: 30px;
+    padding-top: 22px;
+    border-top: 1px solid var(--line);
+  }
+  .equipo dl {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px 24px;
+    margin: 0;
+  }
+  @media (max-width: 479px) {
+    .equipo dl { grid-template-columns: minmax(0, 1fr); }
+  }
+  .equipo dt {
+    font-family: var(--f-mono);
+    font-size: .7rem;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .equipo dd {
+    margin: 3px 0 0;
+    font-family: var(--f-mono);
+    font-size: .86rem;
+    overflow-wrap: anywhere;
+  }
+  .equipo-nota {
+    margin: 18px 0 0;
+    font-size: .95rem;
+    font-style: italic;
+    color: var(--muted);
+  }
+</style>

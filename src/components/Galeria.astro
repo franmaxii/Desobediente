@@ -6,7 +6,7 @@
 import { Image, getImage } from 'astro:assets';
 import SectionHead from './SectionHead.astro';
 import Icon from './Icon.astro';
-import type { Foto } from '../data/galerias';
+import { creditos, type Foto } from '../data/galerias';
 
 interface Props {
   id: string;
@@ -17,6 +17,7 @@ interface Props {
 }
 
 const { id, eyebrow, title, fotos: lista, cta } = Astro.props;
+const fotografos = creditos(lista);
 
 // versión grande para el visor (sin pasarse del tamaño original)
 const fotos = await Promise.all(
@@ -34,7 +35,7 @@ const fotos = await Promise.all(
 
       <ul class="galeria">
         {fotos.map((f, i) => (
-          <li data-reveal={(i % 3) * 80}>
+          <li data-reveal={(i % 4) * 70}>
             <button
               class="foto"
               type="button"
@@ -44,17 +45,32 @@ const fotos = await Promise.all(
               data-w={f.grande.attributes.width}
               data-h={f.grande.attributes.height}
               data-alt={f.alt}
+              data-credito={f.fotografo ? `Ph: ${f.fotografo.nombre}` : undefined}
             >
               <Image
                 src={f.src}
                 alt={f.alt}
-                widths={[360, 540, 720].filter((w) => w <= f.src.width)}
-                sizes="(min-width: 1160px) 370px, (min-width: 720px) 31vw, 48vw"
+                widths={[300, 450, 600].filter((w) => w <= f.src.width)}
+                sizes="(min-width: 1160px) 280px, (min-width: 900px) 24vw, 50vw"
               />
             </button>
           </li>
         ))}
       </ul>
+
+      {fotografos.length > 0 && (
+        <p class="creditos inline-links">
+          Fotos:{' '}
+          {fotografos.map((ph, i) => (
+            <>
+              {i > 0 && ' · '}
+              <a href={ph.url} target="_blank" rel="noopener">
+                {ph.nombre}
+              </a>
+            </>
+          ))}
+        </p>
+      )}
 
       {cta && (
         <a class="btn btn-ghost btn-wide" href={cta.href} target="_blank" rel="noopener">
@@ -68,6 +84,7 @@ const fotos = await Promise.all(
           <img alt="" data-visor-img />
           <figcaption class="visor-pie">
             <span data-visor-contador />
+            <span data-visor-credito />
           </figcaption>
         </figure>
         <button class="visor-btn visor-cerrar" type="button" aria-label="Cerrar" data-visor-cerrar>
@@ -85,22 +102,17 @@ const fotos = await Promise.all(
 }
 
 <style>
+  /* grilla pareja: con 4, 8 o 12 fotos siempre forma un rectángulo */
   .galeria {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
     margin: 0;
     padding: 0;
     list-style: none;
-    columns: 2;
-    column-gap: 10px;
   }
-  @media (min-width: 720px) {
-    .galeria { columns: 3; column-gap: 16px; }
-  }
-  .galeria li {
-    break-inside: avoid;
-    margin-bottom: 10px;
-  }
-  @media (min-width: 720px) {
-    .galeria li { margin-bottom: 16px; }
+  @media (min-width: 900px) {
+    .galeria { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
   }
 
   .foto {
@@ -124,6 +136,8 @@ const fotos = await Promise.all(
   .foto :global(img) {
     width: 100%;
     height: auto;
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
     filter: saturate(.92);
     transition: transform .6s var(--ease), filter .4s;
   }
@@ -132,7 +146,15 @@ const fotos = await Promise.all(
   .foto:hover::after,
   .foto:focus-visible::after { border-color: var(--red); }
 
-  .btn-wide { width: 100%; margin-top: 32px; }
+  .creditos {
+    margin: 18px 0 0;
+    font-family: var(--f-mono);
+    font-size: .78rem;
+    letter-spacing: .06em;
+    color: var(--muted);
+  }
+
+  .btn-wide { width: 100%; margin-top: 28px; }
 
   /* ---------- visor ---------- */
   .visor {
@@ -172,6 +194,8 @@ const fotos = await Promise.all(
     box-shadow: 0 30px 80px rgba(0, 0, 0, .6);
   }
   .visor-pie {
+    display: flex;
+    gap: 18px;
     font-family: var(--f-mono);
     font-size: .8rem;
     letter-spacing: .12em;
@@ -218,6 +242,7 @@ const fotos = await Promise.all(
     const fotos = Array.from(galeria.querySelectorAll<HTMLButtonElement>('[data-foto]'));
     const img = visor.querySelector<HTMLImageElement>('[data-visor-img]')!;
     const contador = visor.querySelector<HTMLElement>('[data-visor-contador]')!;
+    const credito = visor.querySelector<HTMLElement>('[data-visor-credito]')!;
     let actual = 0;
     let disparador: HTMLButtonElement | null = null;
 
@@ -234,6 +259,7 @@ const fotos = await Promise.all(
       img.width = Number(b.dataset.w);
       img.height = Number(b.dataset.h);
       contador.textContent = `${actual + 1} / ${fotos.length}`;
+      credito.textContent = b.dataset.credito ?? '';
       precargar(actual + 1);
       precargar(actual - 1);
     };

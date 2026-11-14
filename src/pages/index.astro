@@ -5,6 +5,7 @@ import Release from '../components/Release.astro';
 import EP from '../components/EP.astro';
 import Videoclips from '../components/Videoclips.astro';
 import Galeria from '../components/Galeria.astro';
+import Actriz from '../components/Actriz.astro';
 import Book from '../components/Book.astro';
 import Bio from '../components/Bio.astro';
 import Links from '../components/Links.astro';
@@ -28,6 +29,7 @@ const instagram = redPorId('instagram').url;
     fotos={fotosEnVivo}
     cta={{ href: instagram, label: 'Próximos shows en Instagram' }}
   />
+  <Actriz />
   <Book />
   <Galeria
     id="modelo"

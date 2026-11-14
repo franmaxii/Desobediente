@@ -1,6 +1,7 @@
 import { artista, redes } from '../data/artista';
 import { single, ep, videoclips } from '../data/musica';
 import { libro } from '../data/libro';
+import { obras } from '../data/actuacion';
 
 /**
  * Datos estructurados (schema.org) para Google: quién es la artista,
@@ -78,6 +79,16 @@ export function datosEstructurados(sitio: URL) {
         homeLocation: { '@type': 'Place', name: artista.origen },
         sameAs,
       },
+      ...obras.map((o) => ({
+        '@type': 'Movie',
+        name: o.titulo,
+        genre: o.genero,
+        description: o.sinopsis,
+        inLanguage: 'es',
+        actor: o.personaje
+          ? { '@type': 'PerformanceRole', actor: { '@id': id('milena') }, characterName: o.personaje }
+          : { '@id': id('milena') },
+      })),
       {
         '@type': 'Book',
         name: libro.titulo,

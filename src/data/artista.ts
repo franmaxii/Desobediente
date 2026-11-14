@@ -7,8 +7,6 @@ export const artista = {
   nacimiento: { fecha: '2006-01-13', barrio: 'Agronomía', ciudad: 'Buenos Aires' },
   /** En sus palabras. */
   sueno: 'Mi sueño es hacer un Vélez y estar en una película masivamente grosa.',
-  /** Cuenta de Instagram de sus gatos (figura en la bio de su Instagram). */
-  gatos: { handle: '@salchichaysushi', url: 'https://www.instagram.com/salchichaysushi' },
   lema: 'Fijate de qué lado de la mecha te encontrás.',
   titulo: 'Desobediente 13 — Milena García, pop rock de Buenos Aires',
   descripcion:
