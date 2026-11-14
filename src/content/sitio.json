@@ -1,10 +1,18 @@
 {
   "artista": {
     "nombre": "Desobediente",
-    "alias": ["Desobediente 13", "Desobediente13", "13desobediente"],
+    "alias": [
+      "Desobediente 13",
+      "Desobediente13",
+      "13desobediente"
+    ],
     "nombreReal": "Milena Sol García",
     "origen": "Buenos Aires, Argentina",
-    "nacimiento": { "fecha": "2006-01-13", "barrio": "Agronomía", "ciudad": "Buenos Aires" },
+    "nacimiento": {
+      "fecha": "2006-01-13",
+      "barrio": "Agronomía",
+      "ciudad": "Buenos Aires"
+    },
     "lema": "Fijate de qué lado de la mecha te encontrás.",
     "sueno": "Mi sueño es hacer un Vélez y estar en una película masivamente grosa.",
     "oficios": [
@@ -86,28 +94,28 @@
     "bajada": "Tik Tak, Veo Veo y Lero Lero. Salieron de abril a octubre, y las tres un día 13.",
     "partes": [
       {
-        "parte": "Parte 1",
         "titulo": "Tik Tak",
         "youtubeId": "wGsG_N0jwA0",
         "fecha": "2026-04-13",
         "miniatura": "img/ep-tik-tak.jpg",
-        "texto": "La más personal. Un momento real de su adolescencia, contado sin anestesia."
+        "texto": "La más personal. Un momento real de su adolescencia, contado sin anestesia.",
+        "parte": "Parte 1"
       },
       {
-        "parte": "Parte 2",
         "titulo": "Veo Veo",
         "youtubeId": "4rjd5XYuREY",
         "fecha": "2026-06-13",
         "miniatura": "img/ep-veo-veo.jpg",
-        "texto": "Resiliencia y crecimiento. Para cantarles en la cara: «mirá de quién te burlaste»."
+        "texto": "Resiliencia y crecimiento. Para cantarles en la cara: «mirá de quién te burlaste».",
+        "parte": "Parte 2"
       },
       {
-        "parte": "Parte 3 y final",
         "titulo": "Lero Lero",
         "youtubeId": "Laa1E7t7040",
         "fecha": "2026-10-13",
         "miniatura": "img/ep-lero-lero.jpg",
-        "texto": "Para la gente falsa, víbora y careta. Inspirada en el capítulo 1 de [su libro](#libro)."
+        "texto": "Para la gente falsa, víbora y careta. Inspirada en el capítulo 1 de [su libro](#libro).",
+        "parte": "Parte 3 y final"
       }
     ]
   },
@@ -173,15 +181,30 @@
       "Edita sus propios videos, trabaja en comunicación digital y en 2026 se recibió de community manager y de perforadora. Vive con sus dos gatos."
     ],
     "ficha": [
-      { "etiqueta": "Nombre", "valor": "Milena Sol García" },
-      { "etiqueta": "Alias", "valor": "Desobediente" },
-      { "etiqueta": "Nació", "valor": "13.01.2006 · Agronomía, CABA" },
-      { "etiqueta": "Sonido", "valor": "Pop rock · rock nacional" },
+      {
+        "etiqueta": "Nombre",
+        "valor": "Milena Sol García"
+      },
+      {
+        "etiqueta": "Alias",
+        "valor": "Desobediente"
+      },
+      {
+        "etiqueta": "Nació",
+        "valor": "13.01.2006 · Agronomía, CABA"
+      },
+      {
+        "etiqueta": "Sonido",
+        "valor": "Pop rock · rock nacional"
+      },
       {
         "etiqueta": "Oficios",
         "valor": "Cantante, actriz, modelo, escritora, guitarrista, editora audiovisual, community manager, perforadora"
       },
-      { "etiqueta": "Número", "valor": "13" }
+      {
+        "etiqueta": "Número",
+        "valor": "13"
+      }
     ]
   },
   "actriz": {
@@ -198,12 +221,30 @@
         "sinopsis": "Isabella es iracunda e impulsiva, y su mayor detonante es la adicción al alcohol. Su madre la sostiene económicamente, y esa plata termina en la bebida. Cuando un día le dice que no, todo cambia y la historia termina en tragedia.",
         "cita": "Un personaje del cual quedé enamorada.",
         "equipo": [
-          { "rol": "Dirección", "instagram": "paduczak.agus" },
-          { "rol": "Producción", "instagram": "more.indesign" },
-          { "rol": "Fotografía y maquillaje", "instagram": "delffiskata.makeup" },
-          { "rol": "Dirección de arte", "instagram": "huellacreativva" },
-          { "rol": "Sonido", "instagram": "vizioli.portfolio" },
-          { "rol": "Con", "instagram": "dalialaura" }
+          {
+            "rol": "Dirección",
+            "instagram": "paduczak.agus"
+          },
+          {
+            "rol": "Producción",
+            "instagram": "more.indesign"
+          },
+          {
+            "rol": "Fotografía y maquillaje",
+            "instagram": "delffiskata.makeup"
+          },
+          {
+            "rol": "Dirección de arte",
+            "instagram": "huellacreativva"
+          },
+          {
+            "rol": "Sonido",
+            "instagram": "vizioli.portfolio"
+          },
+          {
+            "rol": "Con",
+            "instagram": "dalialaura"
+          }
         ],
         "notaEquipo": "Un equipo de mujeres brillantes.",
         "detrasDeEscena": []
@@ -218,9 +259,18 @@
         "sinopsis": "Dos chicas que se quieren mucho se van alejando de a poco a lo largo del corto, hasta que al final la relación se rompe.",
         "equipo": [],
         "detrasDeEscena": [
-          { "imagen": "actriz/ecos-latentes-claqueta.jpg", "alt": "Rodaje de «Ecos latentes»: la claqueta frente a las dos protagonistas." },
-          { "imagen": "actriz/ecos-latentes-atardecer.jpg", "alt": "Rodaje de «Ecos latentes»: las dos protagonistas al sol en la terraza." },
-          { "imagen": "actriz/ecos-latentes-detras-de-camara.jpg", "alt": "Desobediente sonriendo detrás de una cámara durante el rodaje." }
+          {
+            "imagen": "actriz/ecos-latentes-claqueta.jpg",
+            "alt": "Rodaje de «Ecos latentes»: la claqueta frente a las dos protagonistas."
+          },
+          {
+            "imagen": "actriz/ecos-latentes-atardecer.jpg",
+            "alt": "Rodaje de «Ecos latentes»: las dos protagonistas al sol en la terraza."
+          },
+          {
+            "imagen": "actriz/ecos-latentes-detras-de-camara.jpg",
+            "alt": "Desobediente sonriendo detrás de una cámara durante el rodaje."
+          }
         ]
       }
     ]
