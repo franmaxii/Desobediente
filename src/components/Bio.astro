@@ -1,13 +1,19 @@
 ---
 import SectionHead from './SectionHead.astro';
 import { artista } from '../data/artista';
+import { fechaLarga } from '../utils/formato';
 
-const ficha = [
+const { nacimiento, gatos } = artista;
+
+const ficha: { label: string; value: string; href?: string }[] = [
   { label: 'Nombre', value: artista.nombreReal },
   { label: 'Alias', value: artista.nombre },
-  { label: 'Origen', value: artista.origen },
+  { label: 'Nació', value: `${fechaLarga(nacimiento.fecha)} · ${nacimiento.barrio}, CABA` },
   { label: 'Sonido', value: 'Pop rock · rock nacional' },
   { label: 'Oficios', value: artista.oficios.join(', ') },
+  { label: 'Básquet', value: 'Jugadora federada' },
+  { label: 'Gatos', value: `Dos · ${gatos.handle}`, href: gatos.url },
+  { label: 'Sueño', value: 'Hacer un Vélez' },
   { label: 'Número', value: '13' },
 ];
 ---
@@ -16,10 +22,15 @@ const ficha = [
   <SectionHead id="bio-title" eyebrow="Bio" title="No busca encajar" />
 
   <div class="bio-grid">
-    <div class="bio-text" data-reveal>
+    <div class="bio-text inline-links" data-reveal>
       <p class="lead">
-        {artista.nombre} es {artista.nombreReal}, nacida en Buenos Aires en {artista.anioNacimiento}. Cantante, actriz,
-        modelo, escritora y guitarrista.
+        {artista.nombre} es {artista.nombreReal}. Nació el 13 de enero de 2006 en {nacimiento.barrio}, {nacimiento.ciudad}.
+        Cantante, actriz, modelo, escritora y guitarrista.
+      </p>
+      <p>
+        Creció en una familia numerosa, criada por su mamá. La ausencia de su papá la convirtió en canción:{' '}
+        <a href="#videoclips">«Fallo Paterno»</a>. Pasó gran parte de su vida en una cancha de básquet, jugó federada y lo
+        lleva tatuado.
       </p>
       <p>
         La música se volvió su principal forma de expresión, con una identidad ligada al pop rock, la rebeldía y la
@@ -27,17 +38,34 @@ const ficha = [
         de injusticias, de contradicciones humanas y de las realidades que muchas veces se prefieren ignorar.
       </p>
       <p>
-        Edita sus propios proyectos audiovisuales y trabaja en comunicación digital. En 2026 se recibió de community
-        manager y de perforadora. Su lema es una pregunta: de qué lado de la historia está cada uno.
+        Peronista, kirchnerista, feminista, a favor del aborto legal y bisexual. Lo dice como canta: sin pedir permiso.
       </p>
+      <p>
+        Edita sus propios proyectos audiovisuales y trabaja en comunicación digital. En 2026 se recibió de community
+        manager y de perforadora. En casa la esperan dos gatos, que tienen su propio Instagram:{' '}
+        <a href={gatos.url} target="_blank" rel="noopener">{gatos.handle}</a>.
+      </p>
+
+      <figure class="sueno">
+        <blockquote><p>«{artista.sueno}»</p></blockquote>
+        <figcaption>— Milena</figcaption>
+      </figure>
     </div>
 
-    <dl class="ficha" aria-label="Ficha" data-reveal>
+    <dl class="ficha inline-links" aria-label="Ficha" data-reveal>
       {
         ficha.map((f) => (
           <div>
             <dt>{f.label}</dt>
-            <dd>{f.value}</dd>
+            <dd>
+              {f.href ? (
+                <a href={f.href} target="_blank" rel="noopener">
+                  {f.value}
+                </a>
+              ) : (
+                f.value
+              )}
+            </dd>
           </div>
         ))
       }
@@ -54,6 +82,29 @@ const ficha = [
     .bio-grid { grid-template-columns: minmax(0, 1.2fr) minmax(0, .8fr); gap: 72px; align-items: start; }
   }
   .bio-text p:not(.lead) { color: var(--muted); max-width: 62ch; }
+
+  .sueno {
+    margin: 36px 0 0;
+    padding: 4px 0 4px 22px;
+    border-left: 2px solid var(--red);
+  }
+  .sueno blockquote { margin: 0; }
+  .bio-text .sueno blockquote p {
+    margin: 0 0 10px;
+    font-family: var(--f-title);
+    font-weight: 900;
+    font-size: clamp(1.6rem, 3.2vw, 2.2rem);
+    line-height: 1.15;
+    color: var(--red);
+    max-width: none;
+    text-wrap: balance;
+  }
+  .sueno figcaption {
+    font-family: var(--f-mono);
+    font-size: .78rem;
+    letter-spacing: .08em;
+    color: var(--muted);
+  }
 
   .ficha {
     position: relative;

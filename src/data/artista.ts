@@ -2,9 +2,13 @@ export const artista = {
   nombre: 'Desobediente',
   /** Cómo la buscan: la palabra clave principal es «Desobediente 13». */
   alias: ['Desobediente 13', 'Desobediente13', '13desobediente'],
-  nombreReal: 'Milena García',
+  nombreReal: 'Milena Sol García',
   origen: 'Buenos Aires, Argentina',
-  anioNacimiento: 2006,
+  nacimiento: { fecha: '2006-01-13', barrio: 'Agronomía', ciudad: 'Buenos Aires' },
+  /** En sus palabras. */
+  sueno: 'Mi sueño es hacer un Vélez y estar en una película masivamente grosa.',
+  /** Cuenta de Instagram de sus gatos (figura en la bio de su Instagram). */
+  gatos: { handle: '@salchichaysushi', url: 'https://www.instagram.com/salchichaysushi' },
   lema: 'Fijate de qué lado de la mecha te encontrás.',
   titulo: 'Desobediente 13 — Milena García, pop rock de Buenos Aires',
   descripcion:
