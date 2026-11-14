@@ -1,15 +1,10 @@
-# Fotos de las galerías (Modelo y En vivo)
+# Fotos de las galerías
 
-Las fotos de `src/assets/modelo/` aparecen solas en la sección «Modelo» y las de
-`src/assets/en-vivo/` en «En vivo» (cada una con su link en el menú).
-Si una carpeta queda sin fotos, su sección no se muestra.
+Las galerías (Modelo y En vivo) se manejan desde el panel: **/admin**.
+Ahí se suben, ordenan, describen y sacan las fotos, y se publica con un botón.
 
-- **Cantidad**: la grilla es pareja (4 columnas en compu, 2 en celular). Para que forme
-  un rectángulo completo, usá múltiplos de 4: 4, 8, 12…
-- **Orden**: por el número del nombre (`01-...`, `02-...`), aunque estén en subcarpetas distintas.
-- **Descripción** (accesibilidad y Google): sale del nombre, sin el número.
-  `03-piloto-en-la-ventana.jpg` → «Desobediente, foto de modelaje: piloto en la ventana».
-- **Crédito del fotógrafo**: poné la foto en una subcarpeta con su nombre
-  (`ivo-barrios/`, `dado-producciones/`). Para sumar otro fotógrafo, agregalo en
-  `src/data/galerias.ts` → `fotografos`.
-- Formatos: `.jpg`, `.png`, `.webp` o `.avif`, en la mayor resolución posible.
+Qué fotos se muestran, en qué orden y con qué crédito está guardado en
+`src/content/galerias.json`. No muevas ni renombres archivos de esta carpeta a mano:
+si una foto que usa el contenido no está, el build se frena (y la página sigue como estaba).
+
+Las fotos nuevas que se suben desde el panel quedan en `src/assets/subidas/`.

@@ -2,6 +2,7 @@
 import { Image } from 'astro:assets';
 import Icon from './Icon.astro';
 import { libro } from '../data/libro';
+import { conEnlaces } from '../lib/texto';
 ---
 
 <section id="libro" class="section book" aria-labelledby="book-title">
@@ -24,7 +25,7 @@ import { libro } from '../data/libro';
       <blockquote>
         <p>{libro.cita.texto}</p>
       </blockquote>
-      <figcaption class="inline-links" set:html={libro.cita.fuente} />
+      <figcaption class="inline-links" set:html={conEnlaces(libro.cita.fuente)} />
     </figure>
 
     <a class="btn btn-red" href={libro.url} target="_blank" rel="noopener">

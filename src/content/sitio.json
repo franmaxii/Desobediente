@@ -1,0 +1,228 @@
+{
+  "artista": {
+    "nombre": "Desobediente",
+    "alias": ["Desobediente 13", "Desobediente13", "13desobediente"],
+    "nombreReal": "Milena Sol García",
+    "origen": "Buenos Aires, Argentina",
+    "nacimiento": { "fecha": "2006-01-13", "barrio": "Agronomía", "ciudad": "Buenos Aires" },
+    "lema": "Fijate de qué lado de la mecha te encontrás.",
+    "sueno": "Mi sueño es hacer un Vélez y estar en una película masivamente grosa.",
+    "oficios": [
+      "Cantante",
+      "actriz",
+      "modelo",
+      "escritora",
+      "guitarrista",
+      "editora audiovisual",
+      "community manager",
+      "perforadora"
+    ],
+    "titulo": "Desobediente 13 — Milena García, pop rock de Buenos Aires",
+    "descripcion": "Sitio oficial de Desobediente 13 (Milena García): pop rock, rebeldía y crítica social desde Buenos Aires. Escuchá «Tik Tak», mirá los videoclips del EP y leé su libro."
+  },
+  "inicio": {
+    "foto": "img/hero.jpg",
+    "bajada": "Canciones para incomodar cuando hace falta. Rebeldía, crítica social y libertad de pensamiento."
+  },
+  "redes": [
+    {
+      "id": "spotify",
+      "nombre": "Spotify",
+      "url": "https://open.spotify.com/artist/7BlOG10FGKFBCKQ8mKC8iU",
+      "handle": "DESOBEDIENTE",
+      "detalle": "escuchala"
+    },
+    {
+      "id": "youtube",
+      "nombre": "YouTube",
+      "url": "https://www.youtube.com/@Desobediente13",
+      "handle": "@Desobediente13",
+      "detalle": "videoclips"
+    },
+    {
+      "id": "instagram",
+      "nombre": "Instagram",
+      "url": "https://www.instagram.com/13desobediente_",
+      "handle": "@13desobediente_",
+      "detalle": "shows y novedades"
+    },
+    {
+      "id": "tiktok",
+      "nombre": "TikTok",
+      "url": "https://www.tiktok.com/@desobediente113",
+      "handle": "@desobediente113",
+      "detalle": "videos"
+    },
+    {
+      "id": "twitch",
+      "nombre": "Twitch",
+      "url": "https://www.twitch.tv/desobed1ent3",
+      "handle": "desobed1ent3",
+      "detalle": "en vivo"
+    },
+    {
+      "id": "wattpad",
+      "nombre": "Wattpad",
+      "url": "https://www.wattpad.com/user/DESOBEDIENTE",
+      "handle": "@DESOBEDIENTE",
+      "detalle": "el libro"
+    }
+  ],
+  "single": {
+    "titulo": "Tik Tak",
+    "etiqueta": "Single · Parte 1 del EP",
+    "texto": "La canción más personal de Desobediente. Habla de un momento real de su adolescencia: las dos veces que estuvo internada en un psiquiátrico.",
+    "fecha": "2026-04-13",
+    "sello": "CR Musik",
+    "isrc": "QZHN92652260",
+    "genero": "Pop / Rock",
+    "duracionSeg": 200,
+    "audio": "audio/tik-tak.mp3",
+    "portada": "img/tik-tak-cover.jpg"
+  },
+  "ep": {
+    "titulo": "Tres partes, tres videoclips",
+    "anio": 2026,
+    "bajada": "Tik Tak, Veo Veo y Lero Lero. Salieron de abril a octubre, y las tres un día 13.",
+    "partes": [
+      {
+        "parte": "Parte 1",
+        "titulo": "Tik Tak",
+        "youtubeId": "wGsG_N0jwA0",
+        "fecha": "2026-04-13",
+        "miniatura": "img/ep-tik-tak.jpg",
+        "texto": "La más personal. Un momento real de su adolescencia, contado sin anestesia."
+      },
+      {
+        "parte": "Parte 2",
+        "titulo": "Veo Veo",
+        "youtubeId": "4rjd5XYuREY",
+        "fecha": "2026-06-13",
+        "miniatura": "img/ep-veo-veo.jpg",
+        "texto": "Resiliencia y crecimiento. Para cantarles en la cara: «mirá de quién te burlaste»."
+      },
+      {
+        "parte": "Parte 3 y final",
+        "titulo": "Lero Lero",
+        "youtubeId": "Laa1E7t7040",
+        "fecha": "2026-10-13",
+        "miniatura": "img/ep-lero-lero.jpg",
+        "texto": "Para la gente falsa, víbora y careta. Inspirada en el capítulo 1 de [su libro](#libro)."
+      }
+    ]
+  },
+  "videoclips": {
+    "titulo": "Antes del EP",
+    "items": [
+      {
+        "titulo": "Retruco",
+        "youtubeId": "K0F8QytQfxU",
+        "fecha": "2026-01-13",
+        "miniatura": "img/retruco.jpg",
+        "texto": "Arranca melódico y se transforma en rock nacional. Memoria, verdad y justicia; el truco, el tango, la hinchada y las tres estrellas."
+      },
+      {
+        "titulo": "Solo un beso más",
+        "youtubeId": "xt45ocddwpo",
+        "fecha": "2025-08-22",
+        "miniatura": "img/solo-un-beso-mas.jpg",
+        "texto": "La primera canción que produjo, a los 17. Salió después de otras, pero fue la que empezó todo."
+      },
+      {
+        "titulo": "La representante del quilombo",
+        "youtubeId": "mTlFTfJ4AAI",
+        "fecha": "2025-01-12",
+        "miniatura": "img/la-representante-del-quilombo.jpg",
+        "texto": "El videoclip más visto del canal."
+      },
+      {
+        "titulo": "Felices Dañados",
+        "youtubeId": "gGWIgKTENvA",
+        "fecha": "2024-08-28",
+        "miniatura": "img/felices-danados.jpg",
+        "texto": "Para quien perdió a alguien importante. Dedicada a su abuela y a su prima."
+      },
+      {
+        "titulo": "Fallo Paterno",
+        "youtubeId": "zZjT_pBgst4",
+        "fecha": "2024-08-15",
+        "miniatura": "img/fallo-paterno.jpg",
+        "texto": "«Canción apta para gente sin padre (la mitad de la población).»"
+      }
+    ]
+  },
+  "libro": {
+    "titulo": "Este libro fue escrito por uno o más locos",
+    "estado": "Libro · En curso · Wattpad",
+    "url": "https://www.wattpad.com/story/418672829-este-libro-fue-escrito-por-uno-o-mas-locos",
+    "portada": "img/libro.jpg",
+    "pregunta": "¿Qué significa estar loco? ¿Quién decide qué pensamientos son normales, qué comportamientos son aceptables y qué personas merecen ser escuchadas?",
+    "sinopsis": "Relatos, reflexiones filosóficas y críticas sociales sobre las contradicciones de la naturaleza humana: el dolor escondido detrás de una sonrisa, las heridas que se vuelven venganza, las máscaras que usamos para relacionarnos. Sus narradores no siempre tienen razón y sus reflexiones no ofrecen respuestas cómodas.",
+    "cita": {
+      "texto": "Ya nadie puede herir lo que ya está quebrado. Y yo estoy hecha de pedazos de cristal.",
+      "fuente": "Capítulo 1, «Vidrio y cristal». La base de [Lero Lero](#ep)."
+    }
+  },
+  "bio": {
+    "titulo": "No busca encajar",
+    "parrafos": [
+      "Milena Sol García nació el 13 de enero de 2006 en Agronomía. Hoy la conocen como Desobediente: canta, actúa, modela, escribe y toca la guitarra.",
+      "Creció en una familia grande, criada por su mamá. La ausencia de su papá terminó siendo una canción, [«Fallo Paterno»](#videoclips). De chica se pasó años en una cancha de básquet y llegó a jugar federada.",
+      "En la música encontró dónde decir lo que piensa: pop rock con rebeldía y crítica social, estética oscura y ganas de incomodar cuando hace falta. Le interesa hablar de injusticias, de contradicciones y de todo eso que muchos prefieren no mirar.",
+      "Es peronista, kirchnerista y feminista, está a favor del aborto legal y es bisexual. Lo dice como canta: sin pedir permiso.",
+      "Edita sus propios videos, trabaja en comunicación digital y en 2026 se recibió de community manager y de perforadora. Vive con sus dos gatos."
+    ],
+    "ficha": [
+      { "etiqueta": "Nombre", "valor": "Milena Sol García" },
+      { "etiqueta": "Alias", "valor": "Desobediente" },
+      { "etiqueta": "Nació", "valor": "13.01.2006 · Agronomía, CABA" },
+      { "etiqueta": "Sonido", "valor": "Pop rock · rock nacional" },
+      {
+        "etiqueta": "Oficios",
+        "valor": "Cantante, actriz, modelo, escritora, guitarrista, editora audiovisual, community manager, perforadora"
+      },
+      { "etiqueta": "Número", "valor": "13" }
+    ]
+  },
+  "actriz": {
+    "titulo": "En pantalla",
+    "obras": [
+      {
+        "titulo": "Punto de quiebre",
+        "formato": "Cortometraje",
+        "genero": "Drama",
+        "personaje": "Isabella",
+        "imagen": "actriz/punto-de-quiebre-afiche.png",
+        "imagenAlt": "Afiche de «Punto de quiebre»: Desobediente, con una botella en la mano, y su madre en la ficción, espalda con espalda, separadas por una grieta roja. Arriba dice «Todo tiene un límite».",
+        "imagenVertical": true,
+        "sinopsis": "Isabella es iracunda e impulsiva, y su mayor detonante es la adicción al alcohol. Su madre la sostiene económicamente, y esa plata termina en la bebida. Cuando un día le dice que no, todo cambia y la historia termina en tragedia.",
+        "cita": "Un personaje del cual quedé enamorada.",
+        "equipo": [
+          { "rol": "Dirección", "instagram": "paduczak.agus" },
+          { "rol": "Producción", "instagram": "more.indesign" },
+          { "rol": "Fotografía y maquillaje", "instagram": "delffiskata.makeup" },
+          { "rol": "Dirección de arte", "instagram": "huellacreativva" },
+          { "rol": "Sonido", "instagram": "vizioli.portfolio" },
+          { "rol": "Con", "instagram": "dalialaura" }
+        ],
+        "notaEquipo": "Un equipo de mujeres brillantes.",
+        "detrasDeEscena": []
+      },
+      {
+        "titulo": "Ecos latentes",
+        "formato": "Cortometraje",
+        "genero": "Drama",
+        "imagen": "actriz/ecos-latentes-terraza.jpg",
+        "imagenAlt": "Escena de «Ecos latentes» en blanco y negro: Desobediente y la otra protagonista de perfil en una terraza.",
+        "imagenVertical": false,
+        "sinopsis": "Dos chicas que se quieren mucho se van alejando de a poco a lo largo del corto, hasta que al final la relación se rompe.",
+        "equipo": [],
+        "detrasDeEscena": [
+          { "imagen": "actriz/ecos-latentes-claqueta.jpg", "alt": "Rodaje de «Ecos latentes»: la claqueta frente a las dos protagonistas." },
+          { "imagen": "actriz/ecos-latentes-atardecer.jpg", "alt": "Rodaje de «Ecos latentes»: las dos protagonistas al sol en la terraza." },
+          { "imagen": "actriz/ecos-latentes-detras-de-camara.jpg", "alt": "Desobediente sonriendo detrás de una cámara durante el rodaje." }
+        ]
+      }
+    ]
+  }
+}

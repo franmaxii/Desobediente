@@ -1,11 +1,11 @@
 ---
 import { Image } from 'astro:assets';
 import SectionHead from './SectionHead.astro';
-import { obras } from '../data/actuacion';
+import { obras, actrizTitulo } from '../data/actuacion';
 ---
 
 <section id="actriz" class="section" aria-labelledby="actriz-title">
-  <SectionHead id="actriz-title" eyebrow="Actriz" title="En pantalla" />
+  <SectionHead id="actriz-title" eyebrow="Actriz" title={actrizTitulo} />
 
   <div class="obras">
     {
@@ -18,7 +18,7 @@ import { obras } from '../data/actuacion';
               widths={o.imagenVertical ? [360, 540, 720] : [480, 720, 960, 1280]}
               sizes={o.imagenVertical ? '(min-width: 880px) 380px, 80vw' : '(min-width: 880px) 560px, 100vw'}
             />
-            {o.detrasDeEscena && (
+            {o.detrasDeEscena.length > 0 && (
               <div class="detras">
                 <p class="detras-titulo">Detrás de escena</p>
                 <ul>
@@ -54,7 +54,7 @@ import { obras } from '../data/actuacion';
               </figure>
             )}
 
-            {o.equipo && (
+            {o.equipo.length > 0 && (
               <div class="equipo">
                 <dl>
                   {o.equipo.map((c) => (

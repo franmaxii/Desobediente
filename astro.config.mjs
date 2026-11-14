@@ -1,6 +1,7 @@
 // @ts-check
 import { defineConfig, fontProviders } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
+import svelte from '@astrojs/svelte';
 
 // https://astro.build/config
 export default defineConfig({
@@ -8,8 +9,10 @@ export default defineConfig({
   site: 'https://desobediente.franmaxi.lol',
 
   integrations: [
+    // el panel de edición (/admin) está hecho con Svelte; el sitio público no carga nada de esto
+    svelte(),
     sitemap({
-      filter: (page) => !page.includes('/404'),
+      filter: (page) => !page.includes('/404') && !page.includes('/admin') && !page.includes('version.json'),
     }),
   ],
 

@@ -2,7 +2,8 @@
 import SectionHead from './SectionHead.astro';
 import YouTube from './YouTube.astro';
 import Icon from './Icon.astro';
-import { videoclips } from '../data/musica';
+import { videoclips, videoclipsTitulo } from '../data/musica';
+import { conEnlaces } from '../lib/texto';
 import { redPorId } from '../data/artista';
 import { anio } from '../utils/formato';
 
@@ -10,7 +11,7 @@ const youtube = redPorId('youtube');
 ---
 
 <section id="videoclips" class="section" aria-labelledby="clips-title">
-  <SectionHead id="clips-title" eyebrow="Videoclips oficiales" title="Antes del EP" />
+  <SectionHead id="clips-title" eyebrow="Videoclips oficiales" title={videoclipsTitulo} />
 
   <ol class="tracklist">
     {
@@ -28,7 +29,7 @@ const youtube = redPorId('youtube');
             <h3 class="track-name">
               {v.titulo} <span class="track-year">{anio(v.fecha)}</span>
             </h3>
-            <p set:html={v.texto} class="inline-links" />
+            <p set:html={conEnlaces(v.texto)} class="inline-links" />
           </div>
         </li>
       ))

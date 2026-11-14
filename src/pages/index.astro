@@ -9,12 +9,14 @@ import Actriz from '../components/Actriz.astro';
 import Book from '../components/Book.astro';
 import Bio from '../components/Bio.astro';
 import Links from '../components/Links.astro';
-import { fotosEnVivo, fotosModelo } from '../data/galerias';
+import { fotosEnVivo, fotosModelo, galerias } from '../data/galerias';
 import { redPorId } from '../data/artista';
 import { datosEstructurados } from '../utils/seo';
 
 const jsonLd = datosEstructurados(Astro.site ?? new URL(Astro.url.origin));
 const instagram = redPorId('instagram').url;
+const enVivo = galerias['en-vivo'];
+const modelo = galerias.modelo;
 ---
 
 <Layout jsonLd={jsonLd}>
@@ -24,19 +26,19 @@ const instagram = redPorId('instagram').url;
   <Videoclips />
   <Galeria
     id="en-vivo"
-    eyebrow="En vivo"
-    title="Arriba del escenario"
+    eyebrow={enVivo.eyebrow}
+    title={enVivo.titulo}
     fotos={fotosEnVivo}
-    cta={{ href: instagram, label: 'Próximos shows en Instagram' }}
+    cta={{ href: instagram, label: enVivo.cta }}
   />
   <Actriz />
   <Book />
   <Galeria
     id="modelo"
-    eyebrow="Modelo"
-    title="Frente a cámara"
+    eyebrow={modelo.eyebrow}
+    title={modelo.titulo}
     fotos={fotosModelo}
-    cta={{ href: instagram, label: 'Más fotos en Instagram' }}
+    cta={{ href: instagram, label: modelo.cta }}
   />
   <Bio />
   <Links />

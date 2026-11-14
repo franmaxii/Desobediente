@@ -2,6 +2,7 @@
 import SectionHead from './SectionHead.astro';
 import YouTube from './YouTube.astro';
 import { ep } from '../data/musica';
+import { conEnlaces } from '../lib/texto';
 import { fechaCorta } from '../utils/formato';
 ---
 
@@ -24,7 +25,7 @@ import { fechaCorta } from '../utils/formato';
               {p.parte} · <time datetime={p.fecha}>{fechaCorta(p.fecha)}</time>
             </p>
             <h3 class="ep-name">{p.titulo}</h3>
-            <p class="ep-text inline-links" set:html={p.texto} />
+            <p class="ep-text inline-links" set:html={conEnlaces(p.texto)} />
           </div>
         </li>
       ))

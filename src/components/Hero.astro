@@ -2,9 +2,11 @@
 import { Image } from 'astro:assets';
 import Fuse from './Fuse.astro';
 import Icon from './Icon.astro';
-import { artista } from '../data/artista';
+import { artista, inicio } from '../data/artista';
+import { imagen } from '../lib/contenido';
 import { single } from '../data/musica';
-import heroImg from '../assets/img/hero.jpg';
+
+const heroImg = imagen(inicio.foto);
 ---
 
 <section class="hero" aria-labelledby="hero-title">
@@ -23,7 +25,7 @@ import heroImg from '../assets/img/hero.jpg';
 
   <h1 id="hero-title" class="wordmark">desobediente</h1>
   <p class="hero-kicker">Pop rock · {artista.origen}</p>
-  <p class="hero-sub">Canciones para incomodar cuando hace falta. Rebeldía, crítica social y libertad de pensamiento.</p>
+  <p class="hero-sub">{inicio.bajada}</p>
 
   <div class="hero-cta">
     <button class="btn btn-red" type="button" data-play-main>

@@ -1,17 +1,9 @@
 import type { ImageMetadata } from 'astro';
+import { galeriasDatos, imagen } from '../lib/contenido';
 
 /**
- * Galerías de fotos: se arman solas con lo que haya en cada carpeta.
- *
- * - `src/assets/modelo/`  → sección «Modelo»
- * - `src/assets/en-vivo/` → sección «En vivo»
- *
- * Orden: por el número del nombre (01-, 02-, …), aunque estén en subcarpetas distintas.
- * Descripción (accesibilidad y Google): sale del nombre, sin el número.
- * Crédito: si la foto está en una subcarpeta con el nombre de un fotógrafo de la lista
- * de abajo (ej. `modelo/ivo-barrios/`), se muestra su crédito.
- *
- * Para que la grilla quede pareja, conviene que la cantidad sea múltiplo de 4 (4, 8, 12…).
+ * Galerías de fotos. El contenido (fotos, orden, descripciones, fotógrafos) se edita desde
+ * el panel (/admin) y vive en src/content/galerias.json.
  */
 
 export interface Fotografo {
@@ -19,53 +11,37 @@ export interface Fotografo {
   url: string;
 }
 
-export const fotografos: Record<string, Fotografo> = {
-  'ivo-barrios': { nombre: 'Ivo Barrios', url: 'https://www.instagram.com/ivobarrios.fotos' },
-  'dado-producciones': { nombre: 'Dado Producciones', url: 'https://www.instagram.com/dado.producciones' },
-};
-
 export interface Foto {
   src: ImageMetadata;
   alt: string;
   fotografo?: Fotografo;
 }
 
-type Modulos = Record<string, { default: ImageMetadata }>;
+export type GaleriaId = keyof typeof galeriasDatos.galerias;
 
-const armar = (archivos: Modulos, prefijo: string): Foto[] =>
-  Object.entries(archivos)
-    .map(([ruta, mod]) => {
-      const partes = ruta.split('/');
-      const archivo = partes.pop()!;
-      const carpeta = partes.pop() ?? '';
-      const nombre = archivo
-        .replace(/\.[^.]+$/, '')
-        .replace(/^\d+[-_\s]*/, '')
-        .replace(/[-_]+/g, ' ')
-        .trim();
-      return {
-        archivo,
-        foto: {
-          src: mod.default,
-          alt: nombre ? `${prefijo}: ${nombre}` : prefijo,
-          fotografo: fotografos[carpeta],
-        } satisfies Foto,
-      };
-    })
-    .sort((a, b) => a.archivo.localeCompare(b.archivo, 'es', { numeric: true }))
-    .map(({ foto }) => foto);
+const PREFIJOS: Record<GaleriaId, string> = {
+  modelo: 'Desobediente, foto de modelaje',
+  'en-vivo': 'Desobediente en vivo',
+};
+
+const fotografos = new Map<string, Fotografo>(
+  galeriasDatos.fotografos.map((f) => [f.id, { nombre: f.nombre, url: `https://www.instagram.com/${f.instagram}` }]),
+);
+
+const armar = (id: GaleriaId): Foto[] =>
+  galeriasDatos.galerias[id].fotos.map((f) => ({
+    src: imagen(f.imagen),
+    alt: `${PREFIJOS[id]}: ${f.descripcion}`,
+    fotografo: f.fotografo ? fotografos.get(f.fotografo) : undefined,
+  }));
+
+/** Textos de cada galería (título, encabezado y botón). */
+export const galerias = galeriasDatos.galerias;
+
+export const fotosModelo = armar('modelo');
+export const fotosEnVivo = armar('en-vivo');
 
 /** Fotógrafos que aparecen en una galería, sin repetir (para los créditos). */
 export const creditos = (fotos: Foto[]): Fotografo[] => [
   ...new Map(fotos.filter((f) => f.fotografo).map((f) => [f.fotografo!.url, f.fotografo!])).values(),
 ];
-
-export const fotosModelo = armar(
-  import.meta.glob<{ default: ImageMetadata }>('../assets/modelo/**/*.{jpg,jpeg,png,webp,avif}', { eager: true }),
-  'Desobediente, foto de modelaje',
-);
-
-export const fotosEnVivo = armar(
-  import.meta.glob<{ default: ImageMetadata }>('../assets/en-vivo/**/*.{jpg,jpeg,png,webp,avif}', { eager: true }),
-  'Desobediente en vivo',
-);

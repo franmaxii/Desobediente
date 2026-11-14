@@ -1,0 +1,142 @@
+{
+  "fotografos": [
+    {
+      "id": "ivo-barrios",
+      "nombre": "Ivo Barrios",
+      "instagram": "ivobarrios.fotos"
+    },
+    {
+      "id": "dado-producciones",
+      "nombre": "Dado Producciones",
+      "instagram": "dado.producciones"
+    }
+  ],
+  "galerias": {
+    "en-vivo": {
+      "eyebrow": "En vivo",
+      "titulo": "Arriba del escenario",
+      "cta": "Próximos shows en Instagram",
+      "fotos": [
+        {
+          "imagen": "en-vivo/01-escenario-rosa.jpg",
+          "descripcion": "Escenario rosa"
+        },
+        {
+          "imagen": "en-vivo/02-luz-roja.jpg",
+          "descripcion": "Luz roja"
+        },
+        {
+          "imagen": "en-vivo/03-proyeccion-y-graffiti.jpg",
+          "descripcion": "Proyeccion y graffiti"
+        },
+        {
+          "imagen": "en-vivo/04-de-rodillas-con-el-microfono.jpg",
+          "descripcion": "De rodillas con el microfono"
+        },
+        {
+          "imagen": "en-vivo/05-neon.jpg",
+          "descripcion": "Neon"
+        },
+        {
+          "imagen": "en-vivo/06-bar.jpg",
+          "descripcion": "Bar"
+        },
+        {
+          "imagen": "en-vivo/07-brazos-arriba.jpg",
+          "descripcion": "Brazos arriba"
+        },
+        {
+          "imagen": "en-vivo/08-bajo-el-cartel-amarillo.jpg",
+          "descripcion": "Bajo el cartel amarillo"
+        }
+      ]
+    },
+    "modelo": {
+      "eyebrow": "Modelo",
+      "titulo": "Frente a cámara",
+      "cta": "Más fotos en Instagram",
+      "fotos": [
+        {
+          "imagen": "modelo/dado-producciones/01-luz-dorada.jpg",
+          "descripcion": "Luz dorada",
+          "fotografo": "dado-producciones"
+        },
+        {
+          "imagen": "modelo/ivo-barrios/02-camisa-y-corbata-en-la-cocina.jpg",
+          "descripcion": "Camisa y corbata en la cocina",
+          "fotografo": "ivo-barrios"
+        },
+        {
+          "imagen": "modelo/ivo-barrios/03-piloto-en-la-ventana.jpg",
+          "descripcion": "Piloto en la ventana",
+          "fotografo": "ivo-barrios"
+        },
+        {
+          "imagen": "modelo/ivo-barrios/04-con-su-gato.jpg",
+          "descripcion": "Con su gato",
+          "fotografo": "ivo-barrios"
+        },
+        {
+          "imagen": "modelo/dado-producciones/05-sombras-en-la-pared.jpg",
+          "descripcion": "Sombras en la pared",
+          "fotografo": "dado-producciones"
+        },
+        {
+          "imagen": "modelo/ivo-barrios/06-espalda-con-su-nombre-tatuado.jpg",
+          "descripcion": "Espalda con su nombre tatuado",
+          "fotografo": "ivo-barrios"
+        },
+        {
+          "imagen": "modelo/ivo-barrios/07-retrato-con-piloto.jpg",
+          "descripcion": "Retrato con piloto",
+          "fotografo": "ivo-barrios"
+        },
+        {
+          "imagen": "modelo/ivo-barrios/08-luz-de-ventana.jpg",
+          "descripcion": "Luz de ventana",
+          "fotografo": "ivo-barrios"
+        },
+        {
+          "imagen": "modelo/dado-producciones/09-balcon-al-atardecer.jpg",
+          "descripcion": "Balcon al atardecer",
+          "fotografo": "dado-producciones"
+        },
+        {
+          "imagen": "modelo/ivo-barrios/10-corbata-negra.jpg",
+          "descripcion": "Corbata negra",
+          "fotografo": "ivo-barrios"
+        },
+        {
+          "imagen": "modelo/ivo-barrios/11-el-piloto-que-cae.jpg",
+          "descripcion": "El piloto que cae",
+          "fotografo": "ivo-barrios"
+        },
+        {
+          "imagen": "modelo/ivo-barrios/12-saco-negro-en-el-rincon.jpg",
+          "descripcion": "Saco negro en el rincon",
+          "fotografo": "ivo-barrios"
+        },
+        {
+          "imagen": "modelo/ivo-barrios/13-brazos-arriba-en-la-cocina.jpg",
+          "descripcion": "Brazos arriba en la cocina",
+          "fotografo": "ivo-barrios"
+        },
+        {
+          "imagen": "modelo/ivo-barrios/14-sol-sobre-la-pared.jpg",
+          "descripcion": "Sol sobre la pared",
+          "fotografo": "ivo-barrios"
+        },
+        {
+          "imagen": "modelo/ivo-barrios/15-piloto-de-perfil.jpg",
+          "descripcion": "Piloto de perfil",
+          "fotografo": "ivo-barrios"
+        },
+        {
+          "imagen": "modelo/dado-producciones/16-luz-de-tarde.jpg",
+          "descripcion": "Luz de tarde",
+          "fotografo": "dado-producciones"
+        }
+      ]
+    }
+  }
+}

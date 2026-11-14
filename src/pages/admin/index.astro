@@ -1,0 +1,43 @@
+---
+/**
+ * Panel de edición. Lo protege Cloudflare Access (solo entran los mails permitidos)
+ * y, además, cada pedido al servidor vuelve a verificar la identidad.
+ */
+import { Font, getImage } from 'astro:assets';
+import Panel from '../../admin/Panel.svelte';
+import { todasLasImagenes } from '../../lib/contenido';
+import '../../styles/global.css';
+
+// miniaturas livianas de todas las fotos, para que el panel cargue rápido
+const miniaturas = Object.fromEntries(
+  await Promise.all(
+    Object.entries(todasLasImagenes).map(async ([ruta, img]) => {
+      const mini = await getImage({ src: img, width: Math.min(480, img.width), format: 'webp' });
+      return [ruta, mini.src];
+    }),
+  ),
+);
+---
+
+<!doctype html>
+<html lang="es-AR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="theme-color" content="#0c0c0f" />
+    <title>Panel · Desobediente</title>
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <Font cssVariable="--font-gothic" preload />
+    <Font cssVariable="--font-title" />
+    <Font cssVariable="--font-cond" />
+    <Font cssVariable="--font-body" />
+    <Font cssVariable="--font-mono" />
+  </head>
+  <body class="admin">
+    <script type="application/json" id="miniaturas" set:html={JSON.stringify(miniaturas)} />
+    <Panel client:only="svelte" />
+    <noscript>El panel necesita JavaScript.</noscript>
+  </body>
+</html>

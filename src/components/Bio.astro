@@ -1,47 +1,18 @@
 ---
 import SectionHead from './SectionHead.astro';
-import { artista } from '../data/artista';
-import { fechaLarga } from '../utils/formato';
+import { artista, bio } from '../data/artista';
+import { conEnlaces } from '../lib/texto';
 
-const { nacimiento } = artista;
-
-const ficha = [
-  { label: 'Nombre', value: artista.nombreReal },
-  { label: 'Alias', value: artista.nombre },
-  { label: 'Nació', value: `${fechaLarga(nacimiento.fecha)} · ${nacimiento.barrio}, CABA` },
-  { label: 'Sonido', value: 'Pop rock · rock nacional' },
-  { label: 'Oficios', value: artista.oficios.join(', ') },
-  { label: 'Número', value: '13' },
-];
+const [primero, ...resto] = bio.parrafos;
 ---
 
 <section id="bio" class="section" aria-labelledby="bio-title">
-  <SectionHead id="bio-title" eyebrow="Bio" title="No busca encajar" />
+  <SectionHead id="bio-title" eyebrow="Bio" title={bio.titulo} />
 
   <div class="bio-grid">
     <div class="bio-text inline-links" data-reveal>
-      <p class="lead">
-        Milena Sol García nació el 13 de enero de 2006 en {nacimiento.barrio}. Hoy la conocen como {artista.nombre}:
-        canta, actúa, modela, escribe y toca la guitarra.
-      </p>
-      <p>
-        Creció en una familia grande, criada por su mamá. La ausencia de su papá terminó siendo una canción,{' '}
-        <a href="#videoclips">«Fallo Paterno»</a>. De chica se pasó años en una cancha de básquet y llegó a jugar
-        federada.
-      </p>
-      <p>
-        En la música encontró dónde decir lo que piensa: pop rock con rebeldía y crítica social, estética oscura y ganas
-        de incomodar cuando hace falta. Le interesa hablar de injusticias, de contradicciones y de todo eso que muchos
-        prefieren no mirar.
-      </p>
-      <p>
-        Es peronista, kirchnerista y feminista, está a favor del aborto legal y es bisexual. Lo dice como canta: sin
-        pedir permiso.
-      </p>
-      <p>
-        Edita sus propios videos, trabaja en comunicación digital y en 2026 se recibió de community manager y de
-        perforadora. Vive con sus dos gatos.
-      </p>
+      <p class="lead" set:html={conEnlaces(primero)} />
+      {resto.map((p) => <p set:html={conEnlaces(p)} />)}
 
       <figure class="sueno">
         <blockquote><p>«{artista.sueno}»</p></blockquote>
@@ -49,16 +20,18 @@ const ficha = [
       </figure>
     </div>
 
-    <dl class="ficha" aria-label="Ficha" data-reveal>
-      {
-        ficha.map((f) => (
-          <div>
-            <dt>{f.label}</dt>
-            <dd>{f.value}</dd>
-          </div>
-        ))
-      }
-    </dl>
+    {
+      bio.ficha.length > 0 && (
+        <dl class="ficha" aria-label="Ficha" data-reveal>
+          {bio.ficha.map((f) => (
+            <div>
+              <dt>{f.etiqueta}</dt>
+              <dd>{f.valor}</dd>
+            </div>
+          ))}
+        </dl>
+      )
+    }
   </div>
 </section>
 
