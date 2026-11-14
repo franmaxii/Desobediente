@@ -4,12 +4,16 @@ import Hero from '../components/Hero.astro';
 import Release from '../components/Release.astro';
 import EP from '../components/EP.astro';
 import Videoclips from '../components/Videoclips.astro';
+import Galeria from '../components/Galeria.astro';
 import Book from '../components/Book.astro';
 import Bio from '../components/Bio.astro';
 import Links from '../components/Links.astro';
+import { fotosEnVivo, fotosModelo } from '../data/galerias';
+import { redPorId } from '../data/artista';
 import { datosEstructurados } from '../utils/seo';
 
 const jsonLd = datosEstructurados(Astro.site ?? new URL(Astro.url.origin));
+const instagram = redPorId('instagram').url;
 ---
 
 <Layout jsonLd={jsonLd}>
@@ -17,7 +21,21 @@ const jsonLd = datosEstructurados(Astro.site ?? new URL(Astro.url.origin));
   <Release />
   <EP />
   <Videoclips />
+  <Galeria
+    id="en-vivo"
+    eyebrow="En vivo"
+    title="Arriba del escenario"
+    fotos={fotosEnVivo}
+    cta={{ href: instagram, label: 'Próximos shows en Instagram' }}
+  />
   <Book />
+  <Galeria
+    id="modelo"
+    eyebrow="Modelo"
+    title="Frente a cámara"
+    fotos={fotosModelo}
+    cta={{ href: instagram, label: 'Más fotos en Instagram' }}
+  />
   <Bio />
   <Links />
 </Layout>

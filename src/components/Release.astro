@@ -2,11 +2,12 @@
 import { Image, getImage } from 'astro:assets';
 import Fuse from './Fuse.astro';
 import Icon from './Icon.astro';
-import { artista } from '../data/artista';
+import { artista, redPorId } from '../data/artista';
 import { single } from '../data/musica';
 import { duracion, fechaLarga } from '../utils/formato';
 
 const total = duracion(single.duracionSeg);
+const spotify = redPorId('spotify');
 
 // portada en JPG para los controles del sistema (pantalla bloqueada, auriculares)
 const artwork = await getImage({ src: single.portada, width: 512, height: 512, format: 'jpg' });
@@ -66,6 +67,11 @@ const artwork = await getImage({ src: single.portada, width: 512, height: 512, f
       <div><dt>Género</dt><dd>{single.genero}</dd></div>
       <div><dt>Duración</dt><dd>{total}</dd></div>
     </dl>
+
+    <a class="btn btn-ghost spotify" href={spotify.url} target="_blank" rel="noopener">
+      <Icon name="spotify" />
+      Escuchala en Spotify
+    </a>
   </div>
 </section>
 
@@ -216,6 +222,9 @@ const artwork = await getImage({ src: single.portada, width: 512, height: 512, f
     font-size: 1.2rem;
     font-weight: 600;
   }
+
+  .spotify { margin-top: 28px; }
+  .spotify :global(svg) { width: 22px; height: 22px; color: #1ed760; }
 
   /* ---------- mini reproductor ---------- */
   .mini {

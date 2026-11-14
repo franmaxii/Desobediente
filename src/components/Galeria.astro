@@ -1,0 +1,273 @@
+---
+/**
+ * Galería en mosaico con visor a pantalla completa.
+ * Si no recibe fotos, no muestra nada.
+ */
+import { Image, getImage } from 'astro:assets';
+import SectionHead from './SectionHead.astro';
+import Icon from './Icon.astro';
+import type { Foto } from '../data/galerias';
+
+interface Props {
+  id: string;
+  eyebrow: string;
+  title: string;
+  fotos: Foto[];
+  cta?: { href: string; label: string };
+}
+
+const { id, eyebrow, title, fotos: lista, cta } = Astro.props;
+
+// versión grande para el visor (sin pasarse del tamaño original)
+const fotos = await Promise.all(
+  lista.map(async (f) => {
+    const grande = await getImage({ src: f.src, width: Math.min(1600, f.src.width), format: 'webp' });
+    return { ...f, grande };
+  }),
+);
+---
+
+{
+  fotos.length > 0 && (
+    <section id={id} class="section" aria-labelledby={`${id}-title`} data-galeria>
+      <SectionHead id={`${id}-title`} eyebrow={eyebrow} title={title} />
+
+      <ul class="galeria">
+        {fotos.map((f, i) => (
+          <li data-reveal={(i % 3) * 80}>
+            <button
+              class="foto"
+              type="button"
+              aria-label={`Ampliar: ${f.alt}`}
+              data-foto
+              data-full={f.grande.src}
+              data-w={f.grande.attributes.width}
+              data-h={f.grande.attributes.height}
+              data-alt={f.alt}
+            >
+              <Image
+                src={f.src}
+                alt={f.alt}
+                widths={[360, 540, 720].filter((w) => w <= f.src.width)}
+                sizes="(min-width: 1160px) 370px, (min-width: 720px) 31vw, 48vw"
+              />
+            </button>
+          </li>
+        ))}
+      </ul>
+
+      {cta && (
+        <a class="btn btn-ghost btn-wide" href={cta.href} target="_blank" rel="noopener">
+          {cta.label}
+          <Icon name="arrow" />
+        </a>
+      )}
+
+      <dialog class="visor" aria-label={`${title}: foto ampliada`} data-visor>
+        <figure class="visor-figura">
+          <img alt="" data-visor-img />
+          <figcaption class="visor-pie">
+            <span data-visor-contador />
+          </figcaption>
+        </figure>
+        <button class="visor-btn visor-cerrar" type="button" aria-label="Cerrar" data-visor-cerrar>
+          <Icon name="close" />
+        </button>
+        <button class="visor-btn visor-ant" type="button" aria-label="Foto anterior" data-visor-ant>
+          <Icon name="prev" />
+        </button>
+        <button class="visor-btn visor-sig" type="button" aria-label="Foto siguiente" data-visor-sig>
+          <Icon name="next" />
+        </button>
+      </dialog>
+    </section>
+  )
+}
+
+<style>
+  .galeria {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    columns: 2;
+    column-gap: 10px;
+  }
+  @media (min-width: 720px) {
+    .galeria { columns: 3; column-gap: 16px; }
+  }
+  .galeria li {
+    break-inside: avoid;
+    margin-bottom: 10px;
+  }
+  @media (min-width: 720px) {
+    .galeria li { margin-bottom: 16px; }
+  }
+
+  .foto {
+    position: relative;
+    display: block;
+    width: 100%;
+    padding: 0;
+    border: 0;
+    background: var(--bg-2);
+    overflow: hidden;
+    cursor: zoom-in;
+  }
+  .foto::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border: 1px solid transparent;
+    transition: border-color .25s;
+    pointer-events: none;
+  }
+  .foto :global(img) {
+    width: 100%;
+    height: auto;
+    filter: saturate(.92);
+    transition: transform .6s var(--ease), filter .4s;
+  }
+  .foto:hover :global(img),
+  .foto:focus-visible :global(img) { transform: scale(1.03); filter: saturate(1); }
+  .foto:hover::after,
+  .foto:focus-visible::after { border-color: var(--red); }
+
+  .btn-wide { width: 100%; margin-top: 32px; }
+
+  /* ---------- visor ---------- */
+  .visor {
+    width: 100vw;
+    max-width: none;
+    height: 100dvh;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--bone);
+  }
+  .visor[open] {
+    display: grid;
+    place-items: center;
+  }
+  .visor::backdrop {
+    background: rgba(8, 8, 10, .94);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+  }
+
+  .visor-figura {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+  .visor-figura img {
+    max-width: min(92vw, 1100px);
+    max-height: 84dvh;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, .6);
+  }
+  .visor-pie {
+    font-family: var(--f-mono);
+    font-size: .8rem;
+    letter-spacing: .12em;
+    color: var(--muted);
+  }
+
+  .visor-btn {
+    position: fixed;
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    padding: 0;
+    border: 1px solid var(--line);
+    border-radius: 50%;
+    background: rgba(17, 17, 20, .85);
+    color: var(--bone);
+    cursor: pointer;
+    transition: border-color .2s, color .2s;
+  }
+  .visor-btn:hover { border-color: var(--red); color: var(--red-text); }
+  .visor-btn :global(svg) { width: 22px; height: 22px; }
+  .visor-cerrar { top: 16px; right: 16px; }
+  .visor-ant,
+  .visor-sig { top: 50%; transform: translateY(-50%); }
+  .visor-ant { left: 16px; }
+  .visor-sig { right: 16px; }
+  @media (max-width: 719px) {
+    .visor-ant,
+    .visor-sig { top: auto; bottom: 20px; transform: none; }
+    .visor-ant { left: calc(50% - 60px); }
+    .visor-sig { right: calc(50% - 60px); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .foto :global(img) { transition: none; }
+  }
+</style>
+
+<script>
+  // Cada galería tiene su propio visor.
+  document.querySelectorAll<HTMLElement>('[data-galeria]').forEach((galeria) => {
+    const visor = galeria.querySelector<HTMLDialogElement>('[data-visor]')!;
+    const fotos = Array.from(galeria.querySelectorAll<HTMLButtonElement>('[data-foto]'));
+    const img = visor.querySelector<HTMLImageElement>('[data-visor-img]')!;
+    const contador = visor.querySelector<HTMLElement>('[data-visor-contador]')!;
+    let actual = 0;
+    let disparador: HTMLButtonElement | null = null;
+
+    const precargar = (n: number) => {
+      const b = fotos[(n + fotos.length) % fotos.length];
+      if (b?.dataset.full) new Image().src = b.dataset.full;
+    };
+
+    const mostrar = (n: number) => {
+      actual = (n + fotos.length) % fotos.length;
+      const b = fotos[actual];
+      img.src = b.dataset.full!;
+      img.alt = b.dataset.alt ?? '';
+      img.width = Number(b.dataset.w);
+      img.height = Number(b.dataset.h);
+      contador.textContent = `${actual + 1} / ${fotos.length}`;
+      precargar(actual + 1);
+      precargar(actual - 1);
+    };
+
+    fotos.forEach((b, n) =>
+      b.addEventListener('click', () => {
+        disparador = b;
+        mostrar(n);
+        visor.showModal();
+      }),
+    );
+
+    visor.querySelector('[data-visor-cerrar]')!.addEventListener('click', () => visor.close());
+    visor.querySelector('[data-visor-ant]')!.addEventListener('click', () => mostrar(actual - 1));
+    visor.querySelector('[data-visor-sig]')!.addEventListener('click', () => mostrar(actual + 1));
+
+    // clic en el fondo oscuro cierra
+    visor.addEventListener('click', (e) => {
+      if (e.target === visor) visor.close();
+    });
+
+    visor.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') mostrar(actual - 1);
+      if (e.key === 'ArrowRight') mostrar(actual + 1);
+    });
+
+    // deslizar con el dedo en celulares
+    let inicioX = 0;
+    visor.addEventListener('touchstart', (e) => (inicioX = e.touches[0].clientX), { passive: true });
+    visor.addEventListener('touchend', (e) => {
+      const dx = e.changedTouches[0].clientX - inicioX;
+      if (Math.abs(dx) > 50) mostrar(actual + (dx < 0 ? 1 : -1));
+    });
+
+    visor.addEventListener('close', () => disparador?.focus());
+  });
+</script>

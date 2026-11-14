@@ -1,12 +1,16 @@
 ---
+import { fotosEnVivo, fotosModelo } from '../data/galerias';
+
 // fuera del inicio (ej. la 404) los links vuelven a la home
 const base = Astro.url.pathname === '/' ? '' : '/';
 
+// las galerías aparecen en el menú solo si tienen fotos
 const links = [
   { href: '#musica', label: 'Música' },
-  { href: '#ep', label: 'EP' },
   { href: '#videoclips', label: 'Videoclips' },
+  ...(fotosEnVivo.length > 0 ? [{ href: '#en-vivo', label: 'En vivo' }] : []),
   { href: '#libro', label: 'Libro' },
+  ...(fotosModelo.length > 0 ? [{ href: '#modelo', label: 'Modelo' }] : []),
   { href: '#bio', label: 'Bio' },
   { href: '#redes', label: 'Redes' },
 ].map((l) => ({ ...l, href: `${base}${l.href}` }));

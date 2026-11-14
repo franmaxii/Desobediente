@@ -21,7 +21,7 @@ export const artista = {
   ],
 } as const;
 
-export type RedId = 'youtube' | 'instagram' | 'wattpad';
+export type RedId = 'spotify' | 'youtube' | 'instagram' | 'tiktok' | 'twitch' | 'wattpad';
 
 export interface Red {
   id: RedId;
@@ -32,6 +32,13 @@ export interface Red {
 }
 
 export const redes: Red[] = [
+  {
+    id: 'spotify',
+    nombre: 'Spotify',
+    url: 'https://open.spotify.com/artist/7BlOG10FGKFBCKQ8mKC8iU',
+    handle: 'DESOBEDIENTE',
+    detalle: 'escuchala',
+  },
   {
     id: 'youtube',
     nombre: 'YouTube',
@@ -45,6 +52,20 @@ export const redes: Red[] = [
     url: 'https://www.instagram.com/13desobediente_',
     handle: '@13desobediente_',
     detalle: 'shows y novedades',
+  },
+  {
+    id: 'tiktok',
+    nombre: 'TikTok',
+    url: 'https://www.tiktok.com/@desobediente113',
+    handle: '@desobediente113',
+    detalle: 'videos',
+  },
+  {
+    id: 'twitch',
+    nombre: 'Twitch',
+    url: 'https://www.twitch.tv/desobed1ent3',
+    handle: 'desobed1ent3',
+    detalle: 'en vivo',
   },
   {
     id: 'wattpad',

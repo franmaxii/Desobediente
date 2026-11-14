@@ -25,3 +25,6 @@ pnpm-debug.log*
 
 # estado local de wrangler (base D1 de prueba)
 .wrangler/
+
+# fotos que no entraron a la galería
+fotos-descartadas/
